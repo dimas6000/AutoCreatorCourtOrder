@@ -79,7 +79,6 @@ namespace AutoCreatorCourtOrder
         /// </summary>
         private void extractDataButton_Click(object sender, EventArgs e)
         {
-            string initialText = richTextBox1.Text;
 
             //Находим ФИО
             Regex findFullNameRegex = new Regex(@"(?<=Должник.*)[а-яё]+\s+[а-яё]+\s+[а-яё]+", RegexOptions.IgnoreCase);
@@ -87,7 +86,7 @@ namespace AutoCreatorCourtOrder
             MessageBox.Show(fullName);
 
             //Находим Адрес
-            Regex findAddress = new Regex(@"(?<="+fullName+@"\s*)\w.+?(?=\s*Дата)", RegexOptions.IgnoreCase);
+            Regex findAddress = new Regex(@"(?<=" + fullName + @"\s*)\w.+?(?=\s*Дата)", RegexOptions.IgnoreCase);
             string address = FindDataWithRegex(findAddress);
             MessageBox.Show(address);
 
@@ -96,11 +95,25 @@ namespace AutoCreatorCourtOrder
             string DOB = FindDataWithRegex(findDOB);
             MessageBox.Show(DOB);
 
+            //Находим Место рождения
+            Regex findBPL = new Regex(@"(?<=Место\s*рождения.\s*)\w.+?(?=\s*Общая)", RegexOptions.IgnoreCase);
+            string BPL = FindDataWithRegex(findBPL);
+            MessageBox.Show(BPL);
+
             //Находим ИНН
             Regex findINN = new Regex(@"(?<=ИНН\s*)\d+");
             string INN = FindDataWithRegex(findINN);
             MessageBox.Show(INN);
 
+            //Определяем какие задолженности
+            Regex findDebtDescription = new Regex(@"(?<=недоимки\s*по.\s*)\S(.|\s)+?(?=\s*В\sсоответс)");
+            string DebtDescription = FindDataWithRegex(findDebtDescription);
+            MessageBox.Show(DebtDescription);
+
+            //Определяем общую сумму задолженности для расчета госпошлины БЕЗ учета копеек
+            Regex findAllDebt = new Regex(@"(?<=Общая\s*сумма.\s*)\d+");
+            int allDebt =Convert.ToInt32(FindDataWithRegex(findAllDebt));
+            MessageBox.Show(allDebt.ToString());
 
         }
     }
