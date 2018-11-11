@@ -18,9 +18,30 @@ namespace AutoCreatorCourtOrder
             InitializeComponent();
         }
 
+
+
         /// <summary>
-        /// Открытие .rtf
+        /// Поиск данных с помощью регулярных выражений
         /// </summary>
+        /// <param name="regex">Выражение для поиска</param>
+        private string FindDataWithRegex(Regex regex)
+        {
+            return regex.Match(richTextBox1.Text).Value;
+        }
+
+       /* /// <summary>
+        /// Поиск данных с помощью регулярных выражений и удаление лишнего
+        /// </summary>
+        /// <param name="regex">Выражение для поиска</param>
+        /// <param name="forDelete">Что удалить из результирующей строки</param>
+        /// <returns>Возвращает найденные данные удалив forDelete</returns>
+        private string FindDataWithRegex(Regex regex, string forDelete)
+        {
+            string data = regex.Match(richTextBox1.Text).Value;
+            return data.Replace(forDelete, "");
+        }*/
+
+
         private void openFileButton_Click(object sender, EventArgs e)
         {
             try
@@ -61,24 +82,24 @@ namespace AutoCreatorCourtOrder
             string initialText = richTextBox1.Text;
 
             //Находим ФИО
-            Regex findFullName = new Regex(@"Должник:\s*[а-яё]*\s*[а-яё]*\s*[а-яё]*", RegexOptions.IgnoreCase);
-            Match fullName = findFullName.Match(initialText);
-            MessageBox.Show(fullName.Value);
+            Regex findFullNameRegex = new Regex(@"(?<=Должник.*)[а-яё]+\s+[а-яё]+\s+[а-яё]+", RegexOptions.IgnoreCase);
+            string fullName = FindDataWithRegex(findFullNameRegex);
+            MessageBox.Show(fullName);
 
-            //Находим Адрес НЕ ОБРАБОТАНО
-            Regex findAddress = new Regex(@"Должник:\s*[а-яё]*\s*[а-яё]*\s*[а-яё]*", RegexOptions.IgnoreCase);
-            Match address = findAddress.Match(initialText);
-            MessageBox.Show(address.Value);
+            //Находим Адрес, не смог придумать как не брать пробелы в начале строки, поэтому удаляются отдельной строкой кода =(
+            Regex findAddress = new Regex(@"(?<="+fullName+@"\s*)\w.+?(?=\s*Дата)", RegexOptions.IgnoreCase);
+            string address = FindDataWithRegex(findAddress);
+            MessageBox.Show(address);
 
             //Находим Дату рождения
             Regex findDOB = new Regex(@"Дата\s*рождения.\s*[0-9]*.[0-9]*.[0-9]*", RegexOptions.IgnoreCase);
-            Match DOB = findDOB.Match(initialText);
-            MessageBox.Show(DOB.Value);
+            string DOB = FindDataWithRegex(findDOB);
+            MessageBox.Show(DOB);
 
             //Находим ИНН
             Regex findINN = new Regex(@"ИНН\s*[0-9]+");
-            Match INN = findINN.Match(initialText);
-            MessageBox.Show(INN.Value);
+            string INN = FindDataWithRegex(findINN);
+            MessageBox.Show(INN);
 
 
         }
