@@ -86,18 +86,18 @@ namespace AutoCreatorCourtOrder
             string fullName = FindDataWithRegex(findFullNameRegex);
             MessageBox.Show(fullName);
 
-            //Находим Адрес, не смог придумать как не брать пробелы в начале строки, поэтому удаляются отдельной строкой кода =(
+            //Находим Адрес
             Regex findAddress = new Regex(@"(?<="+fullName+@"\s*)\w.+?(?=\s*Дата)", RegexOptions.IgnoreCase);
             string address = FindDataWithRegex(findAddress);
             MessageBox.Show(address);
 
             //Находим Дату рождения
-            Regex findDOB = new Regex(@"Дата\s*рождения.\s*[0-9]*.[0-9]*.[0-9]*", RegexOptions.IgnoreCase);
+            Regex findDOB = new Regex(@"(?<=Дата\s*рождения.\s*)\d+.\d+.\d+", RegexOptions.IgnoreCase);
             string DOB = FindDataWithRegex(findDOB);
             MessageBox.Show(DOB);
 
             //Находим ИНН
-            Regex findINN = new Regex(@"ИНН\s*[0-9]+");
+            Regex findINN = new Regex(@"(?<=ИНН\s*)\d+");
             string INN = FindDataWithRegex(findINN);
             MessageBox.Show(INN);
 
