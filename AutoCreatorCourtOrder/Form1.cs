@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text.RegularExpressions; //для регулярных выражений
 
 namespace AutoCreatorCourtOrder
 {
@@ -17,11 +18,14 @@ namespace AutoCreatorCourtOrder
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Открытие .rtf
+        /// </summary>
         private void openFileButton_Click(object sender, EventArgs e)
         {
             try
             {
-                //чужой код без изменений во всём try
+                //чужой код без изменений во всём using
                 using (OpenFileDialog dialog = new OpenFileDialog())
                 {
                     dialog.CheckFileExists = true;
@@ -35,6 +39,8 @@ namespace AutoCreatorCourtOrder
                         this.richTextBox1.LoadFile(filename);
                     }
                 }
+
+                extractDataButton.Enabled = true; //после открытия файла позволяем извлечь данные
             }
             catch (System.IO.IOException)
             {
@@ -46,5 +52,35 @@ namespace AutoCreatorCourtOrder
             }
         }
 
+
+        /// <summary>
+        /// При нажатии кнопки находит все нужные данные и сохраняет в отдельные строки
+        /// </summary>
+        private void extractDataButton_Click(object sender, EventArgs e)
+        {
+            string initialText = richTextBox1.Text;
+
+            //Находим ФИО
+            Regex findFullName = new Regex(@"Должник:\s*[а-яё]*\s*[а-яё]*\s*[а-яё]*", RegexOptions.IgnoreCase);
+            Match fullName = findFullName.Match(initialText);
+            MessageBox.Show(fullName.Value);
+
+            //Находим Адрес НЕ ОБРАБОТАНО
+            Regex findAddress = new Regex(@"Должник:\s*[а-яё]*\s*[а-яё]*\s*[а-яё]*", RegexOptions.IgnoreCase);
+            Match address = findAddress.Match(initialText);
+            MessageBox.Show(address.Value);
+
+            //Находим Дату рождения
+            Regex findDOB = new Regex(@"Дата\s*рождения.\s*[0-9]*.[0-9]*.[0-9]*", RegexOptions.IgnoreCase);
+            Match DOB = findDOB.Match(initialText);
+            MessageBox.Show(DOB.Value);
+
+            //Находим ИНН
+            Regex findINN = new Regex(@"ИНН\s*[0-9]+");
+            Match INN = findINN.Match(initialText);
+            MessageBox.Show(INN.Value);
+
+
+        }
     }
 }
