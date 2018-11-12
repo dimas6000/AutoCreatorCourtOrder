@@ -38,11 +38,13 @@
             this.label7 = new System.Windows.Forms.Label();
             this.dobTextBox = new System.Windows.Forms.TextBox();
             this.innTextBox = new System.Windows.Forms.TextBox();
-            this.allDebtTextBox = new System.Windows.Forms.TextBox();
             this.bplTextBox = new System.Windows.Forms.TextBox();
             this.addressTextBox = new System.Windows.Forms.TextBox();
-            this.button2 = new System.Windows.Forms.Button();
+            this.OkExtractDataButton = new System.Windows.Forms.Button();
             this.debtStructureRichTextBox = new System.Windows.Forms.RichTextBox();
+            this.editDataButton = new System.Windows.Forms.Button();
+            this.allDebtNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.allDebtNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // fullNameTextBox
@@ -129,13 +131,6 @@
             this.innTextBox.Size = new System.Drawing.Size(218, 27);
             this.innTextBox.TabIndex = 9;
             // 
-            // allDebtTextBox
-            // 
-            this.allDebtTextBox.Location = new System.Drawing.Point(971, 111);
-            this.allDebtTextBox.Name = "allDebtTextBox";
-            this.allDebtTextBox.Size = new System.Drawing.Size(241, 27);
-            this.allDebtTextBox.TabIndex = 10;
-            // 
             // bplTextBox
             // 
             this.bplTextBox.Location = new System.Drawing.Point(155, 78);
@@ -150,15 +145,15 @@
             this.addressTextBox.Size = new System.Drawing.Size(1137, 27);
             this.addressTextBox.TabIndex = 12;
             // 
-            // button2
+            // OkExtractDataButton
             // 
-            this.button2.Location = new System.Drawing.Point(30, 641);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 14;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.OkExtractDataButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.OkExtractDataButton.Location = new System.Drawing.Point(12, 615);
+            this.OkExtractDataButton.Name = "OkExtractDataButton";
+            this.OkExtractDataButton.Size = new System.Drawing.Size(383, 65);
+            this.OkExtractDataButton.TabIndex = 14;
+            this.OkExtractDataButton.Text = "Данные извлечены верно.\r\nЗакрыть окно без изменений.";
+            this.OkExtractDataButton.UseVisualStyleBackColor = true;
             // 
             // debtStructureRichTextBox
             // 
@@ -168,17 +163,42 @@
             this.debtStructureRichTextBox.TabIndex = 15;
             this.debtStructureRichTextBox.Text = "";
             // 
+            // editDataButton
+            // 
+            this.editDataButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.editDataButton.Location = new System.Drawing.Point(829, 615);
+            this.editDataButton.Name = "editDataButton";
+            this.editDataButton.Size = new System.Drawing.Size(383, 65);
+            this.editDataButton.TabIndex = 16;
+            this.editDataButton.Text = "Данные извлечены с ошибкой.\r\nСохранить данные и закрыть окно.";
+            this.editDataButton.UseVisualStyleBackColor = true;
+            this.editDataButton.Click += new System.EventHandler(this.editDataButton_Click);
+            // 
+            // allDebtNumericUpDown
+            // 
+            this.allDebtNumericUpDown.Location = new System.Drawing.Point(971, 112);
+            this.allDebtNumericUpDown.Maximum = new decimal(new int[] {
+            1316134911,
+            2328,
+            0,
+            0});
+            this.allDebtNumericUpDown.Name = "allDebtNumericUpDown";
+            this.allDebtNumericUpDown.Size = new System.Drawing.Size(241, 27);
+            this.allDebtNumericUpDown.TabIndex = 17;
+            this.allDebtNumericUpDown.ThousandsSeparator = true;
+            // 
             // dataForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1224, 692);
+            this.Controls.Add(this.allDebtNumericUpDown);
+            this.Controls.Add(this.editDataButton);
             this.Controls.Add(this.debtStructureRichTextBox);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.OkExtractDataButton);
             this.Controls.Add(this.addressTextBox);
             this.Controls.Add(this.bplTextBox);
-            this.Controls.Add(this.allDebtTextBox);
             this.Controls.Add(this.innTextBox);
             this.Controls.Add(this.dobTextBox);
             this.Controls.Add(this.label7);
@@ -193,6 +213,7 @@
             this.Name = "dataForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "dataForm";
+            ((System.ComponentModel.ISupportInitialize)(this.allDebtNumericUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -210,10 +231,11 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox dobTextBox;
         private System.Windows.Forms.TextBox innTextBox;
-        private System.Windows.Forms.TextBox allDebtTextBox;
         private System.Windows.Forms.TextBox bplTextBox;
         private System.Windows.Forms.TextBox addressTextBox;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button OkExtractDataButton;
         private System.Windows.Forms.RichTextBox debtStructureRichTextBox;
+        private System.Windows.Forms.Button editDataButton;
+        private System.Windows.Forms.NumericUpDown allDebtNumericUpDown;
     }
 }

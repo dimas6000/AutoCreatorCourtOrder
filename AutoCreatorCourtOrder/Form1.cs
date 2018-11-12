@@ -36,11 +36,11 @@ namespace AutoCreatorCourtOrder
         {
             //Находим ФИО
             Regex findFullNameRegex = new Regex(@"(?<=Должник.*)[а-яё]+\s+[а-яё]+\s+[а-яё]+", RegexOptions.IgnoreCase);
-            Data.fullName = FindDataWithRegex(findFullNameRegex);
+            Data.FullName = FindDataWithRegex(findFullNameRegex);
 
             //Находим Адрес
-            Regex findAddress = new Regex(@"(?<=" + Data.fullName + @"\s*)\w.+?(?=\s*Дата)", RegexOptions.IgnoreCase);
-            Data.address = FindDataWithRegex(findAddress);
+            Regex findAddress = new Regex(@"(?<=" + Data.FullName + @"\s*)\w.+?(?=\s*Дата)", RegexOptions.IgnoreCase);
+            Data.Address = FindDataWithRegex(findAddress);
 
             //Находим Дату рождения
             Regex findDOB = new Regex(@"(?<=Дата\s*рождения.\s*)\d+.\d+.\d+", RegexOptions.IgnoreCase);
@@ -60,10 +60,12 @@ namespace AutoCreatorCourtOrder
 
             //Определяем общую сумму задолженности для расчета госпошлины БЕЗ учета копеек
             Regex findAllDebt = new Regex(@"(?<=Общая\s*сумма.\s*)\d+");
-            Data.allDebt = Convert.ToInt32(FindDataWithRegex(findAllDebt));
+            Data.AllDebt = Convert.ToInt32(FindDataWithRegex(findAllDebt));
         }
 
-
+        /// <summary>
+        /// Загружает текст из файла в richTextBox
+        /// </summary>
         private void openFileButton_Click(object sender, EventArgs e)
         {
             try
@@ -80,10 +82,10 @@ namespace AutoCreatorCourtOrder
                     {
                         string filename = dialog.FileName;
                         this.richTextBox1.LoadFile(filename);
+                        extractDataButton.Enabled = true; //после открытия файла позволяем извлечь данные
                     }
                 }
 
-                extractDataButton.Enabled = true; //после открытия файла позволяем извлечь данные
             }
             catch (System.IO.IOException)
             {
@@ -95,21 +97,30 @@ namespace AutoCreatorCourtOrder
             }
         }
 
-
         /// <summary>
         /// При нажатии кнопки находит все нужные данные и сохраняет в отдельные строки
         /// </summary>
         private void extractDataButton_Click(object sender, EventArgs e)
         {
-            //Далее перенести все данные в статическую структуру, возможно придумать как заменять регулярки из файла
-            //После вывести все извлеченные данные в отдельные text box'ы или в listbox, далее как-то создавать судебный приказ по шаблону
-            //По хорошему стоит придумать как сделать шаблон изменяемым, пока что видится такой же .rtf через richTextBox в котором 
-            //По ключевым словам вставлять данные
-
             readData();
-                        
+            extractDataButton.Enabled = false;
+            showDataButton.Enabled = true; //после извлечения данных позволяем просмотреть их
+        }
+
+        /// <summary>
+        /// Отображает извлеченные данные в отдельном окне с возможностью редактирования
+        /// </summary>
+        private void showDataButton_Click(object sender, EventArgs e)
+        {
             dataForm f = new dataForm();
             f.ShowDialog();
         }
+
+
+        //Далее стоит возможно придумать, как заменять регулярки из файла
+        //Далее как-то создавать судебный приказ по шаблону
+        //По хорошему стоит придумать как сделать шаблон изменяемым, пока что видится такой же .rtf через richTextBox в котором 
+        //По ключевым словам вставлять данные
+
     }
 }

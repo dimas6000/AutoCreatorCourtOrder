@@ -15,18 +15,25 @@ namespace AutoCreatorCourtOrder
         public dataForm()
         {
             InitializeComponent();
-            fullNameTextBox.Text = Data.fullName;
-            addressTextBox.Text = Data.address;
+            fullNameTextBox.Text = Data.FullName;
+            addressTextBox.Text = Data.Address;
             bplTextBox.Text = Data.BPL;
             dobTextBox.Text = Data.DOB;
             innTextBox.Text = Data.INN;
-            allDebtTextBox.Text = Data.allDebt.ToString();
+            allDebtNumericUpDown.Value = Convert.ToDecimal(Data.AllDebt);
             debtStructureRichTextBox.Text = Data.DebtStructure;
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void editDataButton_Click(object sender, EventArgs e)
         {
+            Data.FullName = fullNameTextBox.Text;
+            Data.Address = addressTextBox.Text;
+            Data.BPL = bplTextBox.Text;
+            Data.DOB = dobTextBox.Text;
+            Data.INN = innTextBox.Text;
+            Data.DebtStructure = debtStructureRichTextBox.Text;
 
+            Data.AllDebt = Convert.ToInt32(allDebtNumericUpDown.Value);
         }
     }
 }

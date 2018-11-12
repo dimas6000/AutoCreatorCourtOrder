@@ -31,6 +31,7 @@
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.openFileButton = new System.Windows.Forms.Button();
             this.extractDataButton = new System.Windows.Forms.Button();
+            this.showDataButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // richTextBox1
@@ -64,12 +65,24 @@
             this.extractDataButton.UseVisualStyleBackColor = true;
             this.extractDataButton.Click += new System.EventHandler(this.extractDataButton_Click);
             // 
+            // showDataButton
+            // 
+            this.showDataButton.Enabled = false;
+            this.showDataButton.Location = new System.Drawing.Point(350, 632);
+            this.showDataButton.Name = "showDataButton";
+            this.showDataButton.Size = new System.Drawing.Size(163, 48);
+            this.showDataButton.TabIndex = 3;
+            this.showDataButton.Text = "Показать данные";
+            this.showDataButton.UseVisualStyleBackColor = true;
+            this.showDataButton.Click += new System.EventHandler(this.showDataButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1224, 692);
+            this.Controls.Add(this.showDataButton);
             this.Controls.Add(this.extractDataButton);
             this.Controls.Add(this.openFileButton);
             this.Controls.Add(this.richTextBox1);
@@ -86,6 +99,7 @@
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Button openFileButton;
         private System.Windows.Forms.Button extractDataButton;
+        private System.Windows.Forms.Button showDataButton;
     }
 }
 
