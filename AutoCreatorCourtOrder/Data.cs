@@ -26,6 +26,22 @@ namespace AutoCreatorCourtOrder
             return string.Join(" ", s);
         }
 
+        /// <summary>
+        /// Производит расчет госпошлины
+        /// </summary>
+        public static decimal StateDuty(int AllDebt)
+        {
+            if (AllDebt <= 10000)
+                return 200;
+            if (AllDebt <= 20000)
+                return (AllDebt * 0.02m);
+            if (AllDebt <= 100000)
+                return (400 + ((AllDebt - 20000) * 0.015m));
+            if (AllDebt <= 200000)
+                return (1600 + ((AllDebt - 100000) * 0.01m));
+
+            return (2600 + ((AllDebt - 200000) * 0.005m));
+        }
 
         private static string _fullName;
         /// <summary>
@@ -58,5 +74,10 @@ namespace AutoCreatorCourtOrder
         /// Общая сумма долга, для расчета госпошлины
         /// </summary>
         public static int AllDebt { get; set; }
+
+        /// <summary>
+        /// Путь к шаблону судебного приказа
+        /// </summary>
+        public static string pathToTemplate { get; set; }
     }
 }

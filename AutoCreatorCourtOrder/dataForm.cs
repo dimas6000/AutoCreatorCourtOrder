@@ -22,6 +22,7 @@ namespace AutoCreatorCourtOrder
             innTextBox.Text = Data.INN;
             allDebtNumericUpDown.Value = Convert.ToDecimal(Data.AllDebt);
             debtStructureRichTextBox.Text = Data.DebtStructure;
+            stateDutyNumericUpDown.Value = Data.StateDuty(Data.AllDebt);
         }
 
         private void editDataButton_Click(object sender, EventArgs e)
@@ -32,8 +33,15 @@ namespace AutoCreatorCourtOrder
             Data.DOB = dobTextBox.Text;
             Data.INN = innTextBox.Text;
             Data.DebtStructure = debtStructureRichTextBox.Text;
-
             Data.AllDebt = Convert.ToInt32(allDebtNumericUpDown.Value);
+        }
+
+        /// <summary>
+        /// При изменении значения суммы иска пересчитываем госпошлину
+        /// </summary>
+        private void allDebtNumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            stateDutyNumericUpDown.Value = Data.StateDuty(Convert.ToInt32(allDebtNumericUpDown.Value));
         }
     }
 }

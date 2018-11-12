@@ -32,6 +32,8 @@
             this.openFileButton = new System.Windows.Forms.Button();
             this.extractDataButton = new System.Windows.Forms.Button();
             this.showDataButton = new System.Windows.Forms.Button();
+            this.createCourtOrderButton = new System.Windows.Forms.Button();
+            this.chooseATemplateOrederButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // richTextBox1
@@ -76,12 +78,35 @@
             this.showDataButton.UseVisualStyleBackColor = true;
             this.showDataButton.Click += new System.EventHandler(this.showDataButton_Click);
             // 
+            // createCourtOrderButton
+            // 
+            this.createCourtOrderButton.Enabled = false;
+            this.createCourtOrderButton.Location = new System.Drawing.Point(688, 632);
+            this.createCourtOrderButton.Name = "createCourtOrderButton";
+            this.createCourtOrderButton.Size = new System.Drawing.Size(163, 48);
+            this.createCourtOrderButton.TabIndex = 4;
+            this.createCourtOrderButton.Text = "Создать \r\nсудебный приказ";
+            this.createCourtOrderButton.UseVisualStyleBackColor = true;
+            this.createCourtOrderButton.Click += new System.EventHandler(this.createCourtOrderButton_Click);
+            // 
+            // chooseATemplateOrederButton
+            // 
+            this.chooseATemplateOrederButton.Location = new System.Drawing.Point(519, 632);
+            this.chooseATemplateOrederButton.Name = "chooseATemplateOrederButton";
+            this.chooseATemplateOrederButton.Size = new System.Drawing.Size(163, 48);
+            this.chooseATemplateOrederButton.TabIndex = 5;
+            this.chooseATemplateOrederButton.Text = "Выбрать шаблон приказа";
+            this.chooseATemplateOrederButton.UseVisualStyleBackColor = true;
+            this.chooseATemplateOrederButton.Click += new System.EventHandler(this.chooseATemplateOrederButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1224, 692);
+            this.Controls.Add(this.chooseATemplateOrederButton);
+            this.Controls.Add(this.createCourtOrderButton);
             this.Controls.Add(this.showDataButton);
             this.Controls.Add(this.extractDataButton);
             this.Controls.Add(this.openFileButton);
@@ -100,6 +125,8 @@
         private System.Windows.Forms.Button openFileButton;
         private System.Windows.Forms.Button extractDataButton;
         private System.Windows.Forms.Button showDataButton;
+        private System.Windows.Forms.Button createCourtOrderButton;
+        private System.Windows.Forms.Button chooseATemplateOrederButton;
     }
 }
 

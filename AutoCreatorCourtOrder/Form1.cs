@@ -116,6 +116,36 @@ namespace AutoCreatorCourtOrder
             f.ShowDialog();
         }
 
+        private void createCourtOrderButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void chooseATemplateOrederButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (OpenFileDialog dialog = new OpenFileDialog())
+                {
+                    dialog.CheckFileExists = true;
+                    dialog.CheckPathExists = true;
+                    dialog.Multiselect = false;
+                    dialog.Title = "Выберите файл шаблона";
+                    dialog.Filter = "rtf files (*.rtf)|*.rtf";
+                    if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        Data.pathToTemplate = dialog.FileName; //сохраняем путь к шаблону
+                        createCourtOrderButton.Enabled = true; //после открытия файла позволяем извлечь данные
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Произошла неизвестная ошибка/n" + ex.ToString());
+            }
+        }
+
 
         //Далее стоит возможно придумать, как заменять регулярки из файла
         //Далее как-то создавать судебный приказ по шаблону
