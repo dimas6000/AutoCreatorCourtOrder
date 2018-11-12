@@ -41,8 +41,8 @@
             this.allDebtTextBox = new System.Windows.Forms.TextBox();
             this.bplTextBox = new System.Windows.Forms.TextBox();
             this.addressTextBox = new System.Windows.Forms.TextBox();
-            this.debtStructureListBox = new System.Windows.Forms.ListBox();
             this.button2 = new System.Windows.Forms.Button();
+            this.debtStructureRichTextBox = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
             // fullNameTextBox
@@ -150,15 +150,6 @@
             this.addressTextBox.Size = new System.Drawing.Size(1137, 27);
             this.addressTextBox.TabIndex = 12;
             // 
-            // debtStructureListBox
-            // 
-            this.debtStructureListBox.FormattingEnabled = true;
-            this.debtStructureListBox.ItemHeight = 19;
-            this.debtStructureListBox.Location = new System.Drawing.Point(16, 190);
-            this.debtStructureListBox.Name = "debtStructureListBox";
-            this.debtStructureListBox.Size = new System.Drawing.Size(1196, 422);
-            this.debtStructureListBox.TabIndex = 13;
-            // 
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(30, 641);
@@ -169,14 +160,22 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // debtStructureRichTextBox
+            // 
+            this.debtStructureRichTextBox.Location = new System.Drawing.Point(12, 190);
+            this.debtStructureRichTextBox.Name = "debtStructureRichTextBox";
+            this.debtStructureRichTextBox.Size = new System.Drawing.Size(1200, 419);
+            this.debtStructureRichTextBox.TabIndex = 15;
+            this.debtStructureRichTextBox.Text = "";
+            // 
             // dataForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1224, 692);
+            this.Controls.Add(this.debtStructureRichTextBox);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.debtStructureListBox);
             this.Controls.Add(this.addressTextBox);
             this.Controls.Add(this.bplTextBox);
             this.Controls.Add(this.allDebtTextBox);
@@ -214,7 +213,7 @@
         private System.Windows.Forms.TextBox allDebtTextBox;
         private System.Windows.Forms.TextBox bplTextBox;
         private System.Windows.Forms.TextBox addressTextBox;
-        private System.Windows.Forms.ListBox debtStructureListBox;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.RichTextBox debtStructureRichTextBox;
     }
 }

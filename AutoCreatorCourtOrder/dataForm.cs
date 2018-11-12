@@ -15,6 +15,13 @@ namespace AutoCreatorCourtOrder
         public dataForm()
         {
             InitializeComponent();
+            fullNameTextBox.Text = Data.fullName;
+            addressTextBox.Text = Data.address;
+            bplTextBox.Text = Data.BPL;
+            dobTextBox.Text = Data.DOB;
+            innTextBox.Text = Data.INN;
+            allDebtTextBox.Text = Data.allDebt.ToString();
+            debtStructureRichTextBox.Text = Data.DebtStructure;
         }
 
         private void button2_Click(object sender, EventArgs e)
