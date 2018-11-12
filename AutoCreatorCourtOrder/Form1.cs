@@ -17,6 +17,7 @@ namespace AutoCreatorCourtOrder
         public Form1()
         {
             InitializeComponent();
+            orderDateTimePicker.Value = DateTime.Today;
         }
 
 
@@ -84,6 +85,8 @@ namespace AutoCreatorCourtOrder
             //Находим КБК\реквизиты
             Regex findBankDetails = new Regex(@"Получат(.|\s)+?(?=\s*Прилож)", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
             Data.BankDetails = FindDataWithRegex(findBankDetails);
+
+            Data.dateForOrder = orderDateTimePicker.Value.Date; //сохраняем дату для шапки приказа
         }
 
         /// <summary>
@@ -172,9 +175,11 @@ namespace AutoCreatorCourtOrder
             richTextBox1.Rtf = richTextBox1.Rtf.Replace("#DEBTSTRUCTURE#", Data.DebtStructure);
             richTextBox1.Rtf = richTextBox1.Rtf.Replace("#GOSPOSHLINA#", Data.StateDuty(Data.AllDebt).ToString());
             richTextBox1.Rtf = richTextBox1.Rtf.Replace("#BANKDETAILS#", Data.BankDetails);
-
+            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#ORDERDATE#", Data.dateForOrder.ToShortDateString());
+            
             saveButton.Enabled = true;
             createCourtOrderButton.Enabled = false;
+            showDataButton.Enabled = false;
             /// <summary>
             /// #FULLNAME# - заменяется на ФИО 
             ///#DATEOFBIRTH# - заменяется на дату рождения
@@ -183,7 +188,8 @@ namespace AutoCreatorCourtOrder
             ///#INDIVIDUALTAXNUMBER# - заменяется на ИНН
             ///#DEBTSTRUCTURE# - заменяется на текст описывающий задолженность
             ///#GOSPOSHLINA# - заменяется на сумму госпошлины
-            ///#BANKDETAILS# - заменяется на реквизиты
+            ///#BANKDETAILS# - заменяется на реквизиты#FULLNAME# - заменяется на ФИО 
+            ///#ORDERDATE# - заменяется на дату в шапке приказа
             ///<summary>
         }
 
@@ -229,6 +235,7 @@ namespace AutoCreatorCourtOrder
             richTextBox1.SaveFile(directory + "\\Приказ " + Data.FullName + ".rtf", RichTextBoxStreamType.RichText);
             File.Move(Data.PathToProcessedFile, Path.GetDirectoryName(Data.PathToProcessedFile) 
                 + "//!" + Path.GetFileName(Data.PathToProcessedFile));
+            saveButton.Enabled = false;
         }
 
 

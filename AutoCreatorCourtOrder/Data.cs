@@ -79,6 +79,11 @@ namespace AutoCreatorCourtOrder
         public static string BankDetails { get; set; }
 
         /// <summary>
+        /// Дата указываемая в шапке приказа
+        /// </summary>
+        public static DateTime dateForOrder { get; set; }
+
+        /// <summary>
         /// Путь к шаблону приказа
         /// </summary>
         public static string PathToTemplate { get; set; }
