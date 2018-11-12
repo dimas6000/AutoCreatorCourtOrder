@@ -22,6 +22,7 @@ namespace AutoCreatorCourtOrder
             innTextBox.Text = Data.INN;
             allDebtNumericUpDown.Value = Convert.ToDecimal(Data.AllDebt);
             debtStructureRichTextBox.Text = Data.DebtStructure;
+            bankDetailsRichTextBox.Text = Data.BankDetails;
             stateDutyNumericUpDown.Value = Data.StateDuty(Data.AllDebt);
         }
 
@@ -33,6 +34,7 @@ namespace AutoCreatorCourtOrder
             Data.DOB = dobTextBox.Text;
             Data.INN = innTextBox.Text;
             Data.DebtStructure = debtStructureRichTextBox.Text;
+            Data.BankDetails = bankDetailsRichTextBox.Text;
             Data.AllDebt = Convert.ToInt32(allDebtNumericUpDown.Value);
         }
 

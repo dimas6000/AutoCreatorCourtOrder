@@ -73,6 +73,10 @@ namespace AutoCreatorCourtOrder
         /// Общая сумма долга, для расчета госпошлины
         /// </summary>
         public static int AllDebt { get; set; }
+        /// <summary>
+        /// Реквизиты, целиком хранится кусок текста, вроде меняется только КБК
+        /// </summary>
+        public static string BankDetails { get; set; }
 
         /// <summary>
         /// Возвращает путь к шаблону приказа

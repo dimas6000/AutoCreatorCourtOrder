@@ -46,6 +46,8 @@
             this.allDebtNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.label8 = new System.Windows.Forms.Label();
             this.stateDutyNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.bankDetailsRichTextBox = new System.Windows.Forms.RichTextBox();
+            this.label9 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.allDebtNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.stateDutyNumericUpDown)).BeginInit();
             this.SuspendLayout();
@@ -96,7 +98,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(475, 114);
+            this.label5.Location = new System.Drawing.Point(365, 114);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(43, 19);
             this.label5.TabIndex = 5;
@@ -105,7 +107,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(520, 168);
+            this.label6.Location = new System.Drawing.Point(201, 168);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(143, 19);
             this.label6.TabIndex = 6;
@@ -114,7 +116,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(855, 114);
+            this.label7.Location = new System.Drawing.Point(630, 115);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(110, 19);
             this.label7.TabIndex = 7;
@@ -129,9 +131,9 @@
             // 
             // innTextBox
             // 
-            this.innTextBox.Location = new System.Drawing.Point(524, 111);
+            this.innTextBox.Location = new System.Drawing.Point(414, 111);
             this.innTextBox.Name = "innTextBox";
-            this.innTextBox.Size = new System.Drawing.Size(218, 27);
+            this.innTextBox.Size = new System.Drawing.Size(194, 27);
             this.innTextBox.TabIndex = 9;
             // 
             // bplTextBox
@@ -162,7 +164,7 @@
             // 
             this.debtStructureRichTextBox.Location = new System.Drawing.Point(12, 190);
             this.debtStructureRichTextBox.Name = "debtStructureRichTextBox";
-            this.debtStructureRichTextBox.Size = new System.Drawing.Size(1200, 419);
+            this.debtStructureRichTextBox.Size = new System.Drawing.Size(596, 419);
             this.debtStructureRichTextBox.TabIndex = 15;
             this.debtStructureRichTextBox.Text = "";
             // 
@@ -179,14 +181,14 @@
             // 
             // allDebtNumericUpDown
             // 
-            this.allDebtNumericUpDown.Location = new System.Drawing.Point(971, 112);
+            this.allDebtNumericUpDown.Location = new System.Drawing.Point(746, 112);
             this.allDebtNumericUpDown.Maximum = new decimal(new int[] {
             1316134911,
             2328,
             0,
             0});
             this.allDebtNumericUpDown.Name = "allDebtNumericUpDown";
-            this.allDebtNumericUpDown.Size = new System.Drawing.Size(241, 27);
+            this.allDebtNumericUpDown.Size = new System.Drawing.Size(177, 27);
             this.allDebtNumericUpDown.TabIndex = 17;
             this.allDebtNumericUpDown.ThousandsSeparator = true;
             this.allDebtNumericUpDown.ValueChanged += new System.EventHandler(this.allDebtNumericUpDown_ValueChanged);
@@ -194,7 +196,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(861, 148);
+            this.label8.Location = new System.Drawing.Point(942, 115);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(104, 19);
             this.label8.TabIndex = 18;
@@ -204,15 +206,32 @@
             // 
             this.stateDutyNumericUpDown.DecimalPlaces = 2;
             this.stateDutyNumericUpDown.Enabled = false;
-            this.stateDutyNumericUpDown.Location = new System.Drawing.Point(971, 146);
+            this.stateDutyNumericUpDown.Location = new System.Drawing.Point(1052, 111);
             this.stateDutyNumericUpDown.Maximum = new decimal(new int[] {
             1316134911,
             2328,
             0,
             0});
             this.stateDutyNumericUpDown.Name = "stateDutyNumericUpDown";
-            this.stateDutyNumericUpDown.Size = new System.Drawing.Size(241, 27);
+            this.stateDutyNumericUpDown.Size = new System.Drawing.Size(160, 27);
             this.stateDutyNumericUpDown.TabIndex = 19;
+            // 
+            // bankDetailsRichTextBox
+            // 
+            this.bankDetailsRichTextBox.Location = new System.Drawing.Point(616, 190);
+            this.bankDetailsRichTextBox.Name = "bankDetailsRichTextBox";
+            this.bankDetailsRichTextBox.Size = new System.Drawing.Size(596, 419);
+            this.bankDetailsRichTextBox.TabIndex = 20;
+            this.bankDetailsRichTextBox.Text = "";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(883, 168);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(95, 19);
+            this.label9.TabIndex = 21;
+            this.label9.Text = "Реквизиты:";
             // 
             // dataForm
             // 
@@ -220,6 +239,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1224, 692);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.bankDetailsRichTextBox);
             this.Controls.Add(this.stateDutyNumericUpDown);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.allDebtNumericUpDown);
@@ -269,5 +290,7 @@
         private System.Windows.Forms.NumericUpDown allDebtNumericUpDown;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.NumericUpDown stateDutyNumericUpDown;
+        private System.Windows.Forms.RichTextBox bankDetailsRichTextBox;
+        private System.Windows.Forms.Label label9;
     }
 }

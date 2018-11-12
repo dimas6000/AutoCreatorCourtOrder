@@ -34,36 +34,40 @@ namespace AutoCreatorCourtOrder
         /// </summary>
         private void readData()
         {
-            //ЕЩЁ НАДО МЕНЯТЬ КБК
+            //Ограничиваем время поиска во всех регулярках
 
             //Находим ФИО
-            Regex findFullNameRegex = new Regex(@"(?<=Должник.*)[а-яё]+\s+[а-яё]+\s+[а-яё]+", RegexOptions.IgnoreCase);
+            Regex findFullNameRegex = new Regex(@"(?<=Должник.*)[а-яё]+\s+[а-яё]+\s+[а-яё]+", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
             Data.FullName = FindDataWithRegex(findFullNameRegex);
 
             //Находим Адрес
-            Regex findAddress = new Regex(@"(?<=" + Data.FullName + @"\s*)\w.+?(?=\s*Дата)", RegexOptions.IgnoreCase);
+            Regex findAddress = new Regex(@"(?<=" + Data.FullName + @"\s*)\w.+?(?=\s*Дата)", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
             Data.Address = FindDataWithRegex(findAddress);
 
             //Находим Дату рождения
-            Regex findDOB = new Regex(@"(?<=Дата\s*рождения.\s*)\d+.\d+.\d+", RegexOptions.IgnoreCase);
+            Regex findDOB = new Regex(@"(?<=Дата\s*рождения.\s*)\d+.\d+.\d+", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
             Data.DOB = FindDataWithRegex(findDOB);
 
             //Находим Место рождения
-            Regex findBPL = new Regex(@"(?<=Место\s*рождения.\s*)\w.+?(?=\s*Общая)", RegexOptions.IgnoreCase);
+            Regex findBPL = new Regex(@"(?<=Место\s*рождения.\s*)\w.+?(?=\s*Общая)", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
             Data.BPL = FindDataWithRegex(findBPL);
 
             //Находим ИНН
-            Regex findINN = new Regex(@"(?<=ИНН\s*)\d+");
+            Regex findINN = new Regex(@"(?<=ИНН\s*)\d+", RegexOptions.None, TimeSpan.FromSeconds(3));
             Data.INN = FindDataWithRegex(findINN);
 
             //Определяем какие задолженности
-            Regex findDebtDescription = new Regex(@"(?<=недоимки\s*по.\s*)\S(.|\s)+?(?=\s*В\sсоответс)");
+            Regex findDebtDescription = new Regex(@"(?<=недоимки\s*по.\s*)\S(.|\s)+?(?=\s*В\sсоответс)", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
             Data.DebtStructure = FindDataWithRegex(findDebtDescription);
 
             //Определяем общую сумму задолженности для расчета госпошлины БЕЗ учета копеек
-            Regex findAllDebt = new Regex(@"(?<=Общая\s*сумма.\s*)\d+");
+            Regex findAllDebt = new Regex(@"(?<=Общая\s*сумма.\s*)\d+", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
             string test = FindDataWithRegex(findAllDebt);
             Data.AllDebt = Convert.ToInt32(FindDataWithRegex(findAllDebt));
+
+            //Находим КБК
+            Regex findBankDetails = new Regex(@"Получат(.|\s)+?(?=\s*Прилож)", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
+            Data.BankDetails = FindDataWithRegex(findBankDetails);
         }
 
         /// <summary>
@@ -99,6 +103,7 @@ namespace AutoCreatorCourtOrder
                 MessageBox.Show("Произошла неизвестная ошибка при считывании файла/n" + ex.ToString());
                 Application.Exit();
             }
+            string test = richTextBox1.Rtf;
         }
 
         /// <summary>
