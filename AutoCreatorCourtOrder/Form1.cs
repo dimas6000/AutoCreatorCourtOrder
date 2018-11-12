@@ -34,6 +34,8 @@ namespace AutoCreatorCourtOrder
         /// </summary>
         private void readData()
         {
+            //ЕЩЁ НАДО МЕНЯТЬ КБК
+
             //Находим ФИО
             Regex findFullNameRegex = new Regex(@"(?<=Должник.*)[а-яё]+\s+[а-яё]+\s+[а-яё]+", RegexOptions.IgnoreCase);
             Data.FullName = FindDataWithRegex(findFullNameRegex);
@@ -60,6 +62,7 @@ namespace AutoCreatorCourtOrder
 
             //Определяем общую сумму задолженности для расчета госпошлины БЕЗ учета копеек
             Regex findAllDebt = new Regex(@"(?<=Общая\s*сумма.\s*)\d+");
+            string test = FindDataWithRegex(findAllDebt);
             Data.AllDebt = Convert.ToInt32(FindDataWithRegex(findAllDebt));
         }
 
@@ -81,7 +84,7 @@ namespace AutoCreatorCourtOrder
                     if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
                         string filename = dialog.FileName;
-                        this.richTextBox1.LoadFile(filename);
+                        richTextBox1.LoadFile(filename);
                         extractDataButton.Enabled = true; //после открытия файла позволяем извлечь данные
                     }
                 }
@@ -94,6 +97,7 @@ namespace AutoCreatorCourtOrder
             catch (Exception ex)
             {
                 MessageBox.Show("Произошла неизвестная ошибка при считывании файла/n" + ex.ToString());
+                Application.Exit();
             }
         }
 
@@ -119,8 +123,49 @@ namespace AutoCreatorCourtOrder
         private void createCourtOrderButton_Click(object sender, EventArgs e)
         {
 
+            try
+            {
+                richTextBox1.LoadFile(Data.PathToTemplate);
+            }
+            catch (System.IO.IOException)
+            {
+                MessageBox.Show("Выбранный шаблон не может быть открыт, возможно он используется другой программой, " +
+                    "закройте программу использующую файл шаблона и попробуйте заново.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Произошла неизвестная ошибка/n" + ex.ToString());
+                Application.Exit();
+
+            }
+        
+           
+            
+            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#FULLNAME#", Data.FullName);
+            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#DATEOFBIRTH#", Data.DOB);
+            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#PLACEOFBIRTH#", Data.BPL);
+            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#ADDRESS#", Data.Address);
+            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#INDIVIDUALTAXNUMBER#", Data.INN);
+            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#DEBTSTRUCTURE#", Data.DebtStructure);
+            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#GOSPOSHLINA#", Data.StateDuty(Data.AllDebt).ToString());
+
+
+           
+            // richTextBox1.SaveFile("!" + Data.FullName + "приказ.rtf");
+            /// <summary>
+            /// #FULLNAME# - заменяется на ФИО 
+            ///#DATEOFBIRTH# - заменяется на дату рождения
+            ///#PLACEOFBIRTH# - заменяется на место рождения
+            ///#ADDRESS# - заменяется на адрес
+            ///#INDIVIDUALTAXNUMBER# - заменяется на ИНН
+            ///#DEBTSTRUCTURE# - заменяется на текст описывающий задолженность
+            ///#GOSPOSHLINA# - заменяется на сумму госпошлины
+            ///<summary>
         }
 
+        /// <summary>
+        /// Выбирем шаблон для создания судебного приказа
+        /// </summary>
         private void chooseATemplateOrederButton_Click(object sender, EventArgs e)
         {
             try
@@ -134,23 +179,30 @@ namespace AutoCreatorCourtOrder
                     dialog.Filter = "rtf files (*.rtf)|*.rtf";
                     if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
-                        Data.pathToTemplate = dialog.FileName; //сохраняем путь к шаблону
-                        createCourtOrderButton.Enabled = true; //после открытия файла позволяем извлечь данные
+                        Data.PathToTemplate = dialog.FileName; //используем шаблон приказа
+                        createCourtOrderButton.Enabled = true; //после открытия файла позволяем создание приказа
                     }
                 }
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Произошла неизвестная ошибка/n" + ex.ToString());
+                Application.Exit();
             }
+        }
+        
+        
+        /// <summary>
+        /// Сохраняет файл из richTextBox1
+        /// </summary>
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+            richTextBox1.SaveFile(Data.PathToTemplate + Data.FullName + ".rtf", RichTextBoxStreamType.RichText);
         }
 
 
         //Далее стоит возможно придумать, как заменять регулярки из файла
         //Далее как-то создавать судебный приказ по шаблону
-        //По хорошему стоит придумать как сделать шаблон изменяемым, пока что видится такой же .rtf через richTextBox в котором 
-        //По ключевым словам вставлять данные
 
     }
 }

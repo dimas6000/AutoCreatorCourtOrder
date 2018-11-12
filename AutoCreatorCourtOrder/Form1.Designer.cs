@@ -34,6 +34,7 @@
             this.showDataButton = new System.Windows.Forms.Button();
             this.createCourtOrderButton = new System.Windows.Forms.Button();
             this.chooseATemplateOrederButton = new System.Windows.Forms.Button();
+            this.saveButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // richTextBox1
@@ -99,12 +100,23 @@
             this.chooseATemplateOrederButton.UseVisualStyleBackColor = true;
             this.chooseATemplateOrederButton.Click += new System.EventHandler(this.chooseATemplateOrederButton_Click);
             // 
+            // saveButton
+            // 
+            this.saveButton.Location = new System.Drawing.Point(857, 632);
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(163, 48);
+            this.saveButton.TabIndex = 6;
+            this.saveButton.Text = "Сохранить судебный приказ";
+            this.saveButton.UseVisualStyleBackColor = true;
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1224, 692);
+            this.Controls.Add(this.saveButton);
             this.Controls.Add(this.chooseATemplateOrederButton);
             this.Controls.Add(this.createCourtOrderButton);
             this.Controls.Add(this.showDataButton);
@@ -127,6 +139,7 @@
         private System.Windows.Forms.Button showDataButton;
         private System.Windows.Forms.Button createCourtOrderButton;
         private System.Windows.Forms.Button chooseATemplateOrederButton;
+        private System.Windows.Forms.Button saveButton;
     }
 }
 

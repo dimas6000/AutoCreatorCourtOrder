@@ -49,7 +49,6 @@ namespace AutoCreatorCourtOrder
         /// </summary>
         public static string FullName { get { return _fullName; } set { _fullName = FirstUpper(value); } }
 
-
         /// <summary>
         /// Адрес
         /// </summary>
@@ -76,8 +75,10 @@ namespace AutoCreatorCourtOrder
         public static int AllDebt { get; set; }
 
         /// <summary>
-        /// Путь к шаблону судебного приказа
+        /// Возвращает путь к шаблону приказа
         /// </summary>
-        public static string pathToTemplate { get; set; }
+        public static string PathToTemplate { get; set; }
+
+
     }
 }
