@@ -79,7 +79,7 @@ namespace AutoCreatorCourtOrder
         public static string BankDetails { get; set; }
 
         /// <summary>
-        /// Возвращает путь к шаблону приказа
+        /// Путь к шаблону приказа
         /// </summary>
         public static string PathToTemplate { get; set; }
 

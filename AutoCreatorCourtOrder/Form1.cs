@@ -75,7 +75,7 @@ namespace AutoCreatorCourtOrder
             {
                 Data.AllDebt = Convert.ToInt32(FindDataWithRegex(findAllDebt));
             }
-            catch(System.FormatException)
+            catch (System.FormatException)
             {
                 MessageBox.Show("В тексте не было найдено общей суммы задолженности, возможно вы пытаетесь извлечь данные из неподходящего документа");
                 return;//выходим из функции по причине ошибки
@@ -158,9 +158,7 @@ namespace AutoCreatorCourtOrder
                 Application.Exit();
 
             }
-        
-           
-            
+
             richTextBox1.Rtf = richTextBox1.Rtf.Replace("#FULLNAME#", Data.FullName);
             richTextBox1.Rtf = richTextBox1.Rtf.Replace("#DATEOFBIRTH#", Data.DOB);
             richTextBox1.Rtf = richTextBox1.Rtf.Replace("#PLACEOFBIRTH#", Data.BPL);
@@ -168,10 +166,8 @@ namespace AutoCreatorCourtOrder
             richTextBox1.Rtf = richTextBox1.Rtf.Replace("#INDIVIDUALTAXNUMBER#", Data.INN);
             richTextBox1.Rtf = richTextBox1.Rtf.Replace("#DEBTSTRUCTURE#", Data.DebtStructure);
             richTextBox1.Rtf = richTextBox1.Rtf.Replace("#GOSPOSHLINA#", Data.StateDuty(Data.AllDebt).ToString());
+            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#BANKDETAILS#", Data.BankDetails);
 
-
-           
-            // richTextBox1.SaveFile("!" + Data.FullName + "приказ.rtf");
             /// <summary>
             /// #FULLNAME# - заменяется на ФИО 
             ///#DATEOFBIRTH# - заменяется на дату рождения
@@ -180,6 +176,7 @@ namespace AutoCreatorCourtOrder
             ///#INDIVIDUALTAXNUMBER# - заменяется на ИНН
             ///#DEBTSTRUCTURE# - заменяется на текст описывающий задолженность
             ///#GOSPOSHLINA# - заменяется на сумму госпошлины
+            ///#BANKDETAILS# - заменяется на реквизиты
             ///<summary>
         }
 
@@ -210,14 +207,14 @@ namespace AutoCreatorCourtOrder
                 Application.Exit();
             }
         }
-        
-        
+
+
         /// <summary>
         /// Сохраняет файл из richTextBox1
         /// </summary>
         private void saveButton_Click(object sender, EventArgs e)
         {
-            richTextBox1.SaveFile(Data.PathToTemplate + Data.FullName + ".rtf", RichTextBoxStreamType.RichText);
+            richTextBox1.SaveFile(System.IO.Path.GetDirectoryName(Data.PathToTemplate) + "\\!Приказ " + Data.FullName + ".rtf", RichTextBoxStreamType.RichText);
         }
 
 
