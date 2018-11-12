@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.RegularExpressions; //для регулярных выражений
+using System.IO;
 
 namespace AutoCreatorCourtOrder
 {
@@ -90,6 +91,8 @@ namespace AutoCreatorCourtOrder
         /// </summary>
         private void openFileButton_Click(object sender, EventArgs e)
         {
+            createCourtOrderButton.Enabled = false;
+            saveButton.Enabled = false;
             try
             {
                 //чужой код без изменений во всём using
@@ -129,6 +132,8 @@ namespace AutoCreatorCourtOrder
             readData();
             extractDataButton.Enabled = false;
             showDataButton.Enabled = true; //после извлечения данных позволяем просмотреть их
+            if (Data.PathToTemplate != null)
+                createCourtOrderButton.Enabled = true;
         }
 
         /// <summary>
@@ -168,6 +173,7 @@ namespace AutoCreatorCourtOrder
             richTextBox1.Rtf = richTextBox1.Rtf.Replace("#GOSPOSHLINA#", Data.StateDuty(Data.AllDebt).ToString());
             richTextBox1.Rtf = richTextBox1.Rtf.Replace("#BANKDETAILS#", Data.BankDetails);
 
+            saveButton.Enabled = true;
             /// <summary>
             /// #FULLNAME# - заменяется на ФИО 
             ///#DATEOFBIRTH# - заменяется на дату рождения
@@ -214,7 +220,12 @@ namespace AutoCreatorCourtOrder
         /// </summary>
         private void saveButton_Click(object sender, EventArgs e)
         {
-            richTextBox1.SaveFile(System.IO.Path.GetDirectoryName(Data.PathToTemplate) + "\\!Приказ " + Data.FullName + ".rtf", RichTextBoxStreamType.RichText);
+            String directory = Path.GetDirectoryName(Data.PathToTemplate) + "\\Приказы созданные программой";
+            if (!Directory.Exists(directory)) //создаем директорию если её не существует
+            {
+                Directory.CreateDirectory(directory);
+            }
+            richTextBox1.SaveFile(directory + "\\Приказ " + Data.FullName + ".rtf", RichTextBoxStreamType.RichText);
         }
 
 

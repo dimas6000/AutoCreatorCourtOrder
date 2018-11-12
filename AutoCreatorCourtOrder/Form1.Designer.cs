@@ -71,18 +71,18 @@
             // showDataButton
             // 
             this.showDataButton.Enabled = false;
-            this.showDataButton.Location = new System.Drawing.Point(350, 632);
+            this.showDataButton.Location = new System.Drawing.Point(1049, 632);
             this.showDataButton.Name = "showDataButton";
             this.showDataButton.Size = new System.Drawing.Size(163, 48);
             this.showDataButton.TabIndex = 3;
-            this.showDataButton.Text = "Показать данные";
+            this.showDataButton.Text = "Показать извлеченные данные";
             this.showDataButton.UseVisualStyleBackColor = true;
             this.showDataButton.Click += new System.EventHandler(this.showDataButton_Click);
             // 
             // createCourtOrderButton
             // 
             this.createCourtOrderButton.Enabled = false;
-            this.createCourtOrderButton.Location = new System.Drawing.Point(688, 632);
+            this.createCourtOrderButton.Location = new System.Drawing.Point(350, 632);
             this.createCourtOrderButton.Name = "createCourtOrderButton";
             this.createCourtOrderButton.Size = new System.Drawing.Size(163, 48);
             this.createCourtOrderButton.TabIndex = 4;
@@ -92,7 +92,7 @@
             // 
             // chooseATemplateOrederButton
             // 
-            this.chooseATemplateOrederButton.Location = new System.Drawing.Point(519, 632);
+            this.chooseATemplateOrederButton.Location = new System.Drawing.Point(880, 632);
             this.chooseATemplateOrederButton.Name = "chooseATemplateOrederButton";
             this.chooseATemplateOrederButton.Size = new System.Drawing.Size(163, 48);
             this.chooseATemplateOrederButton.TabIndex = 5;
@@ -102,7 +102,8 @@
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(857, 632);
+            this.saveButton.Enabled = false;
+            this.saveButton.Location = new System.Drawing.Point(519, 632);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(163, 48);
             this.saveButton.TabIndex = 6;
