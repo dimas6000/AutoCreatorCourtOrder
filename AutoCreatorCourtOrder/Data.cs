@@ -83,6 +83,10 @@ namespace AutoCreatorCourtOrder
         /// </summary>
         public static string PathToTemplate { get; set; }
 
+        /// <summary>
+        /// Путь к обрабатываемому файлу, для изменения имени
+        /// </summary>
+        public static string PathToProcessedFile { get; set; }
 
     }
 }

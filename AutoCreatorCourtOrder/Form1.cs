@@ -105,8 +105,8 @@ namespace AutoCreatorCourtOrder
                     dialog.Filter = "rtf files (*.rtf)|*.rtf";
                     if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
-                        string filename = dialog.FileName;
-                        richTextBox1.LoadFile(filename);
+                        Data.PathToProcessedFile = dialog.FileName;
+                        richTextBox1.LoadFile(Data.PathToProcessedFile);
                         extractDataButton.Enabled = true; //после открытия файла позволяем извлечь данные
                     }
                 }
@@ -226,6 +226,8 @@ namespace AutoCreatorCourtOrder
                 Directory.CreateDirectory(directory);
             }
             richTextBox1.SaveFile(directory + "\\Приказ " + Data.FullName + ".rtf", RichTextBoxStreamType.RichText);
+            File.Move(Data.PathToProcessedFile, Path.GetDirectoryName(Data.PathToProcessedFile) 
+                + "//!" + Path.GetFileName(Data.PathToProcessedFile));
         }
 
 

@@ -75,7 +75,7 @@
             this.showDataButton.Name = "showDataButton";
             this.showDataButton.Size = new System.Drawing.Size(163, 48);
             this.showDataButton.TabIndex = 3;
-            this.showDataButton.Text = "Показать извлеченные данные";
+            this.showDataButton.Text = "Просмотреть данные";
             this.showDataButton.UseVisualStyleBackColor = true;
             this.showDataButton.Click += new System.EventHandler(this.showDataButton_Click);
             // 
