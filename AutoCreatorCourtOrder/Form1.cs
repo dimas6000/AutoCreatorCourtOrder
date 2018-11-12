@@ -26,7 +26,15 @@ namespace AutoCreatorCourtOrder
         /// <param name="regex">Выражение для поиска</param>
         private string FindDataWithRegex(Regex regex)
         {
-            return regex.Match(richTextBox1.Text).Value;
+            try
+            {
+                return regex.Match(richTextBox1.Text).Value;
+            }
+            catch (System.Text.RegularExpressions.RegexMatchTimeoutException)
+            {
+                MessageBox.Show("Реквизиты не найдены в тексте, возможно вы пытаетесь использовать неподходящий документ.");
+                return "КБК не обнаружено";
+            }
         }
 
         /// <summary>
@@ -63,9 +71,16 @@ namespace AutoCreatorCourtOrder
             //Определяем общую сумму задолженности для расчета госпошлины БЕЗ учета копеек
             Regex findAllDebt = new Regex(@"(?<=Общая\s*сумма.\s*)\d+", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
             string test = FindDataWithRegex(findAllDebt);
-            Data.AllDebt = Convert.ToInt32(FindDataWithRegex(findAllDebt));
-
-            //Находим КБК
+            try
+            {
+                Data.AllDebt = Convert.ToInt32(FindDataWithRegex(findAllDebt));
+            }
+            catch(System.FormatException)
+            {
+                MessageBox.Show("В тексте не было найдено общей суммы задолженности, возможно вы пытаетесь извлечь данные из неподходящего документа");
+                return;//выходим из функции по причине ошибки
+            }
+            //Находим КБК\реквизиты
             Regex findBankDetails = new Regex(@"Получат(.|\s)+?(?=\s*Прилож)", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
             Data.BankDetails = FindDataWithRegex(findBankDetails);
         }
