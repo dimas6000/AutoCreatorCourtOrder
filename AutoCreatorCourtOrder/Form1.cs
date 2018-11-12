@@ -174,6 +174,7 @@ namespace AutoCreatorCourtOrder
             richTextBox1.Rtf = richTextBox1.Rtf.Replace("#BANKDETAILS#", Data.BankDetails);
 
             saveButton.Enabled = true;
+            createCourtOrderButton.Enabled = false;
             /// <summary>
             /// #FULLNAME# - заменяется на ФИО 
             ///#DATEOFBIRTH# - заменяется на дату рождения
