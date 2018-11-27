@@ -11,7 +11,7 @@ namespace AutoCreatorCourtOrder
         /// <summary>
         /// Получает строку, делает каждое слово с заглавной буквы.
         /// </summary>
-        public static string FirstUpper(string str)
+        private static string FirstUpper(string str)
         {
             //Код функции целиком скопирован с cyberforum.com
             str = str.ToLower();
@@ -50,6 +50,11 @@ namespace AutoCreatorCourtOrder
         public static string FullName { get { return _fullName; } set { _fullName = FirstUpper(value); } }
 
         /// <summary>
+        /// ФИО в родительном падеже
+        /// </summary>
+        public static string FullNameGenitive { get; set; }
+
+        /// <summary>
         /// Адрес
         /// </summary>
         public static string Address { get; set; }
@@ -79,11 +84,6 @@ namespace AutoCreatorCourtOrder
         public static string BankDetails { get; set; }
 
         /// <summary>
-        /// Дата указываемая в шапке приказа
-        /// </summary>
-        public static DateTime dateForOrder { get; set; }
-
-        /// <summary>
         /// Путь к шаблону приказа
         /// </summary>
         public static string PathToTemplate { get; set; }
@@ -92,6 +92,11 @@ namespace AutoCreatorCourtOrder
         /// Путь к обрабатываемому файлу, для изменения имени
         /// </summary>
         public static string PathToProcessedFile { get; set; }
+
+        /// <summary>
+        /// Путь к папке с приказами для обработки всех сразу
+        /// </summary>
+        //  public static string PathToFolder { get; set; }
 
     }
 }

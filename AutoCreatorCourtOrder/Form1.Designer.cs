@@ -35,8 +35,7 @@
             this.createCourtOrderButton = new System.Windows.Forms.Button();
             this.chooseATemplateOrederButton = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
-            this.orderDateTimePicker = new System.Windows.Forms.DateTimePicker();
-            this.label1 = new System.Windows.Forms.Label();
+            this.directoryCreateOrderButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // richTextBox1
@@ -113,21 +112,17 @@
             this.saveButton.UseVisualStyleBackColor = true;
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
-            // orderDateTimePicker
+            // directoryCreateOrderButton
             // 
-            this.orderDateTimePicker.Location = new System.Drawing.Point(935, 653);
-            this.orderDateTimePicker.Name = "orderDateTimePicker";
-            this.orderDateTimePicker.Size = new System.Drawing.Size(278, 27);
-            this.orderDateTimePicker.TabIndex = 7;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(931, 629);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(283, 19);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "Выберите дату для шапки приказа:";
+            this.directoryCreateOrderButton.Enabled = false;
+            this.directoryCreateOrderButton.Location = new System.Drawing.Point(880, 633);
+            this.directoryCreateOrderButton.Name = "directoryCreateOrderButton";
+            this.directoryCreateOrderButton.Size = new System.Drawing.Size(332, 102);
+            this.directoryCreateOrderButton.TabIndex = 7;
+            this.directoryCreateOrderButton.Text = "Выбрать папку с заявлениями для создания судебных приказов и создать приказы для " +
+    "всех файлов из папки";
+            this.directoryCreateOrderButton.UseVisualStyleBackColor = true;
+            this.directoryCreateOrderButton.Click += new System.EventHandler(this.directoryCreateOrderButton_Click);
             // 
             // Form1
             // 
@@ -135,8 +130,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1224, 747);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.orderDateTimePicker);
+            this.Controls.Add(this.directoryCreateOrderButton);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.chooseATemplateOrederButton);
             this.Controls.Add(this.createCourtOrderButton);
@@ -149,7 +143,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -162,8 +155,7 @@
         private System.Windows.Forms.Button createCourtOrderButton;
         private System.Windows.Forms.Button chooseATemplateOrederButton;
         private System.Windows.Forms.Button saveButton;
-        private System.Windows.Forms.DateTimePicker orderDateTimePicker;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button directoryCreateOrderButton;
     }
 }
 
