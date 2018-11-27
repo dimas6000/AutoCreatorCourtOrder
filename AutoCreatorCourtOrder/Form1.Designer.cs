@@ -40,6 +40,7 @@
             // 
             // richTextBox1
             // 
+            this.richTextBox1.AcceptsTab = true;
             this.richTextBox1.DetectUrls = false;
             this.richTextBox1.Location = new System.Drawing.Point(13, 13);
             this.richTextBox1.Name = "richTextBox1";

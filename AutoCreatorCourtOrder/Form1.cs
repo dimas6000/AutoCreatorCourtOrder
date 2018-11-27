@@ -69,6 +69,10 @@ namespace AutoCreatorCourtOrder
             Regex findDebtDescription = new Regex(@"(?<=недоимки\s*по.\s*)\S(.|\s)+?(?=\s*В\sсоответс)", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
             Data.DebtStructure = FindDataWithRegex(findDebtDescription);
 
+            // Непонятно. Почему-то структура долга при сохранении в rtf теряет переносы строки если не добавить экранирование к \n,
+            // при этом чуть ниже КБК\реквизиты копируются прекрасно без каких-то заморочек и переносы строки не теряются. 
+            Data.DebtStructure = Data.DebtStructure.Replace("\n", "\\\n"); 
+
             //Определяем общую сумму задолженности для расчета госпошлины БЕЗ учета копеек
             Regex findAllDebt = new Regex(@"(?<=Общая\s*сумма.\s*)\d+", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
             string test = FindDataWithRegex(findAllDebt);
@@ -107,6 +111,7 @@ namespace AutoCreatorCourtOrder
             {
                 MessageBox.Show("Выбранный шаблон не может быть открыт, возможно он используется другой программой, " +
                     "закройте программу использующую файл шаблона и попробуйте заново.");
+                return;
             }
             catch (Exception ex)
             {
