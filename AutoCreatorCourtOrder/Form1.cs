@@ -67,12 +67,10 @@ namespace AutoCreatorCourtOrder
 
             //Определяем какие задолженности
             Regex findDebtDescription = new Regex(@"(?<=недоимки\s*по.\s*)\S(.|\s)+?(?=\s*В\sсоответс)", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
-            Data.DebtStructure = FindDataWithRegex(findDebtDescription);
-
-            // Непонятно. Почему-то структура долга при сохранении в rtf теряет переносы строки если не добавить экранирование к \n,
+            Data.DebtStructure = FindDataWithRegex(findDebtDescription).Replace("\n", "\\\n");
+            // Непонятно. Почему-то структура долга и кбк при сохранении в rtf теряет переносы строки если не добавить экранирование к \n,
             // при этом чуть ниже КБК\реквизиты копируются прекрасно без каких-то заморочек и переносы строки не теряются. 
-            Data.DebtStructure = Data.DebtStructure.Replace("\n", "\\\n"); 
-
+      
             //Определяем общую сумму задолженности для расчета госпошлины БЕЗ учета копеек
             Regex findAllDebt = new Regex(@"(?<=Общая\s*сумма.\s*)\d+", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
             string test = FindDataWithRegex(findAllDebt);
@@ -88,7 +86,7 @@ namespace AutoCreatorCourtOrder
             }
             //Находим КБК\реквизиты
             Regex findBankDetails = new Regex(@"Получат(.|\s)+?(?=\s*Прилож)", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
-            Data.BankDetails = FindDataWithRegex(findBankDetails);
+            Data.BankDetails = FindDataWithRegex(findBankDetails).Replace("\n", "\\\n");
 
             //ниже склоняем ФИО в родительный падеж
             string[] SplFullName = Data.FullName.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
