@@ -43,35 +43,35 @@ namespace AutoCreatorCourtOrder
         /// </summary>
         private void readData()
         {
-            //Ограничиваем время поиска во всех регулярках
+            // Ограничиваем время поиска во всех регулярках
 
-            //Находим ФИО
+            // Находим ФИО
             Regex findFullNameRegex = new Regex(@"(?<=Должник.*)[а-яё]+\s+[а-яё]+\s+[а-яё]+", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
             Data.FullName = FindDataWithRegex(findFullNameRegex);
 
-            //Находим Адрес
+            // Находим Адрес
             Regex findAddress = new Regex(@"(?<=" + Data.FullName + @"\s*)\w.+?(?=\s*Дата)", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
             Data.Address = FindDataWithRegex(findAddress);
 
-            //Находим Дату рождения
+            // Находим Дату рождения
             Regex findDOB = new Regex(@"(?<=Дата\s*рождения.\s*)\d+.\d+.\d+", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
             Data.DOB = FindDataWithRegex(findDOB);
 
-            //Находим Место рождения
+            // Находим Место рождения
             Regex findBPL = new Regex(@"(?<=Место\s*рождения.\s*)\w.+?(?=\s*Общая)", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
             Data.BPL = FindDataWithRegex(findBPL);
 
-            //Находим ИНН
+            // Находим ИНН
             Regex findINN = new Regex(@"(?<=ИНН\s*)\d+", RegexOptions.None, TimeSpan.FromSeconds(3));
             Data.INN = FindDataWithRegex(findINN);
 
-            //Определяем какие задолженности
+            // Определяем какие задолженности
             Regex findDebtDescription = new Regex(@"(?<=недоимки\s*по.\s*)\S(.|\s)+?(?=\s*В\sсоответс)", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
             Data.DebtStructure = FindDataWithRegex(findDebtDescription).Replace("\n", "\\\n");
             // Непонятно. Почему-то структура долга и кбк при сохранении в rtf теряет переносы строки если не добавить экранирование к \n,
             // при этом чуть ниже КБК\реквизиты копируются прекрасно без каких-то заморочек и переносы строки не теряются. 
       
-            //Определяем общую сумму задолженности для расчета госпошлины БЕЗ учета копеек
+            // Определяем общую сумму задолженности для расчета госпошлины БЕЗ учета копеек
             Regex findAllDebt = new Regex(@"(?<=Общая\s*сумма.\s*)\d+", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
             string test = FindDataWithRegex(findAllDebt);
 
@@ -84,11 +84,11 @@ namespace AutoCreatorCourtOrder
                 MessageBox.Show("В тексте не было найдено общей суммы задолженности, возможно вы пытаетесь извлечь данные из неподходящего документа");
                 return;//выходим из функции по причине ошибки
             }
-            //Находим КБК\реквизиты
+            // Находим КБК\реквизиты
             Regex findBankDetails = new Regex(@"Получат(.|\s)+?(?=\s*Прилож)", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
             Data.BankDetails = FindDataWithRegex(findBankDetails).Replace("\n", "\\\n");
 
-            //ниже склоняем ФИО в родительный падеж
+            // ниже склоняем ФИО в родительный падеж
             string[] SplFullName = Data.FullName.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             Decliner A = new Decliner();
             string[] GenitiveFullName = A.Decline(SplFullName[0], SplFullName[1], SplFullName[2], 2);
@@ -132,15 +132,15 @@ namespace AutoCreatorCourtOrder
             createCourtOrderButton.Enabled = false;
             showDataButton.Enabled = false;
             /// <summary>
-            ///#FULLNAME# - заменяется на ФИО 
-            ///#GENITIVE# - заменяется на ФИО в родительном
-            ///#DATEOFBIRTH# - заменяется на дату рождения
-            ///#PLACEOFBIRTH# - заменяется на место рождения
-            ///#ADDRESS# - заменяется на адрес
-            ///#INDIVIDUALTAXNUMBER# - заменяется на ИНН
-            ///#DEBTSTRUCTURE# - заменяется на текст описывающий задолженность
-            ///#GOSPOSHLINA# - заменяется на сумму госпошлины
-            ///#BANKDETAILS# - заменяется на реквизиты
+            /// #FULLNAME# - заменяется на ФИО 
+            /// #GENITIVE# - заменяется на ФИО в родительном
+            /// #DATEOFBIRTH# - заменяется на дату рождения
+            /// #PLACEOFBIRTH# - заменяется на место рождения
+            /// #ADDRESS# - заменяется на адрес
+            /// #INDIVIDUALTAXNUMBER# - заменяется на ИНН
+            /// #DEBTSTRUCTURE# - заменяется на текст описывающий задолженность
+            /// #GOSPOSHLINA# - заменяется на сумму госпошлины
+            /// #BANKDETAILS# - заменяется на реквизиты
             ///<summary>
         }
 
@@ -173,7 +173,7 @@ namespace AutoCreatorCourtOrder
             saveButton.Enabled = false;
             try
             {
-                //чужой код почти без изменений во всём using
+                // чужой код почти без изменений во всём using
                 using (OpenFileDialog dialog = new OpenFileDialog())
                 {
                     dialog.CheckFileExists = true;
@@ -244,9 +244,9 @@ namespace AutoCreatorCourtOrder
                     dialog.Filter = "rtf files (*.rtf)|*.rtf";
                     if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
-                        Data.PathToTemplate = dialog.FileName; //используем шаблон приказа
-                        createCourtOrderButton.Enabled = true; //после открытия файла позволяем создание приказа
-                        directoryCreateOrderButton.Enabled = true; //или позволяем выбор папки для автосоздания
+                        Data.PathToTemplate = dialog.FileName; // используем шаблон приказа
+                        createCourtOrderButton.Enabled = true; // после открытия файла позволяем создание приказа
+                        directoryCreateOrderButton.Enabled = true; // или позволяем выбор папки для автосоздания
                     }
                 }
             }
