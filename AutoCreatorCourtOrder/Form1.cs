@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.RegularExpressions; //для регулярных выражений
 using System.IO;
+using Cyriller;
 
 namespace AutoCreatorCourtOrder
 {
@@ -90,7 +91,8 @@ namespace AutoCreatorCourtOrder
 
             // ниже склоняем ФИО в родительный падеж
             string[] SplFullName = Data.FullName.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            Decliner A = new Decliner();
+
+            var A = new CyrName();
             string[] GenitiveFullName = A.Decline(SplFullName[0], SplFullName[1], SplFullName[2], 2);
             Data.FullNameGenitive = GenitiveFullName[0] + " " + GenitiveFullName[1] + " " + GenitiveFullName[2];
         }
