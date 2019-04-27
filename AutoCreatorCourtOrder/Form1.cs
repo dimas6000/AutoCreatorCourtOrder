@@ -34,8 +34,8 @@ namespace AutoCreatorCourtOrder
             }
             catch (System.Text.RegularExpressions.RegexMatchTimeoutException)
             {
-                MessageBox.Show("Реквизиты не найдены в тексте, возможно вы пытаетесь использовать неподходящий документ.");
-                return "КБК не обнаружено";
+                MessageBox.Show("Данные не найдены в тексте, возможно вы пытаетесь использовать неподходящий документ.");
+                return "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ДАННЫЕ НЕ ОБНАРУЖЕНЫ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
             }
         }
 
@@ -67,7 +67,7 @@ namespace AutoCreatorCourtOrder
             Data.INN = FindDataWithRegex(findINN);
 
             // Определяем какие задолженности
-            Regex findDebtDescription = new Regex(@"(?<=недоимки\s*по.\s*)\S(.|\s)+?(?=\s*В\sсоответс)", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
+            Regex findDebtDescription = new Regex(@"(?<=недоимки\s*по.\s*)\S(.|\s)+?(?=\s*В\sсоответ\S(.|\s)+?123.8)", RegexOptions.None, TimeSpan.FromSeconds(3));
             Data.DebtStructure = FindDataWithRegex(findDebtDescription).Replace("\n", "\\\n");
             // Непонятно. Почему-то структура долга и кбк при сохранении в rtf теряет переносы строки если не добавить экранирование к \n,
             // при этом чуть ниже КБК\реквизиты копируются прекрасно без каких-то заморочек и переносы строки не теряются. 
