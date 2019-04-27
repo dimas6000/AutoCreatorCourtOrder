@@ -71,7 +71,7 @@ namespace AutoCreatorCourtOrder
             Data.DebtStructure = FindDataWithRegex(findDebtDescription).Replace("\n", "\\\n");
             // Непонятно. Почему-то структура долга и кбк при сохранении в rtf теряет переносы строки если не добавить экранирование к \n,
             // при этом чуть ниже КБК\реквизиты копируются прекрасно без каких-то заморочек и переносы строки не теряются. 
-      
+
             // Определяем общую сумму задолженности для расчета госпошлины БЕЗ учета копеек
             Regex findAllDebt = new Regex(@"(?<=Общая\s*сумма.\s*)\d+", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
             string test = FindDataWithRegex(findAllDebt);
@@ -95,10 +95,23 @@ namespace AutoCreatorCourtOrder
             var A = new CyrName();
             string[] GenitiveFullName = A.Decline(SplFullName[0], SplFullName[1], SplFullName[2], 2);
             Data.FullNameGenitive = GenitiveFullName[0] + " " + GenitiveFullName[1] + " " + GenitiveFullName[2];
+
+
+            //НЕ РАБОТАЕТ, ЧТО-ТО ДЕЛАЮ НЕ ТАК
+          /*  /* Раньше все хорошо было, теперь почему-то после склонения ФИО в родительный падеж кодировка меняется 
+             * с UTF8 на CP1252, это костыль для обратного преобразования, причину смены кодировки не выяснил
+             * надо выяснить и убрать костыль. 
+            Encoding utf = Encoding.GetEncoding(1251);
+            Encoding win = Encoding.UTF8;
+            byte[] utfArr = utf.GetBytes(Data.FullNameGenitive);
+            byte[] winArr = Encoding.Convert(win, utf, utfArr);
+            Data.FullNameGenitive = win.GetString(winArr);
+            */
+
         }
 
         /// <summary>
-        /// Создает судебный приказ по шаблону
+        /// Создает судебный приказ по шаблону.
         /// </summary>
         private void createCourtOrder()
         {
@@ -121,7 +134,7 @@ namespace AutoCreatorCourtOrder
             }
 
             richTextBox1.Rtf = richTextBox1.Rtf.Replace("#FULLNAME#", Data.FullName);
-            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#FULLNAMEGENITIVE#", Data.FullNameGenitive);
+            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#GENITIVE#", Data.FullNameGenitive);
             richTextBox1.Rtf = richTextBox1.Rtf.Replace("#DATEOFBIRTH#", Data.DOB);
             richTextBox1.Rtf = richTextBox1.Rtf.Replace("#PLACEOFBIRTH#", Data.BPL);
             richTextBox1.Rtf = richTextBox1.Rtf.Replace("#ADDRESS#", Data.Address);
@@ -157,8 +170,8 @@ namespace AutoCreatorCourtOrder
             {
                 Directory.CreateDirectory(directory);
             }
-            richTextBox1.SaveFile(directory + "\\Приказ " + Data.FullName + ".rtf", RichTextBoxStreamType.RichText);
-
+             richTextBox1.SaveFile(directory + "\\Приказ " + Data.FullName + ".rtf", RichTextBoxStreamType.RichText);
+           
             if (rename)
                 File.Move(Data.PathToProcessedFile, Path.GetDirectoryName(Data.PathToProcessedFile)
                     + "//!" + Path.GetFileName(Data.PathToProcessedFile));
@@ -231,7 +244,7 @@ namespace AutoCreatorCourtOrder
         }
 
         /// <summary>
-        /// Выбирем шаблон для создания судебного приказа
+        /// Выбираем шаблон для создания судебного приказа
         /// </summary>
         private void chooseATemplateOrederButton_Click(object sender, EventArgs e)
         {
