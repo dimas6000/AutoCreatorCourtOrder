@@ -1,6 +1,6 @@
 ﻿namespace AutoCreatorCourtOrder
 {
-    partial class dataForm
+    partial class DataViewForm
     {
         /// <summary>
         /// Required designer variable.
@@ -40,9 +40,8 @@
             this.innTextBox = new System.Windows.Forms.TextBox();
             this.bplTextBox = new System.Windows.Forms.TextBox();
             this.addressTextBox = new System.Windows.Forms.TextBox();
-            this.OkExtractDataButton = new System.Windows.Forms.Button();
+            this.ExitButton = new System.Windows.Forms.Button();
             this.debtStructureRichTextBox = new System.Windows.Forms.RichTextBox();
-            this.editDataButton = new System.Windows.Forms.Button();
             this.allDebtNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.label8 = new System.Windows.Forms.Label();
             this.stateDutyNumericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -150,15 +149,15 @@
             this.addressTextBox.Size = new System.Drawing.Size(1137, 27);
             this.addressTextBox.TabIndex = 12;
             // 
-            // OkExtractDataButton
+            // ExitButton
             // 
-            this.OkExtractDataButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.OkExtractDataButton.Location = new System.Drawing.Point(12, 615);
-            this.OkExtractDataButton.Name = "OkExtractDataButton";
-            this.OkExtractDataButton.Size = new System.Drawing.Size(383, 65);
-            this.OkExtractDataButton.TabIndex = 14;
-            this.OkExtractDataButton.Text = "Данные извлечены верно.\r\nЗакрыть окно без изменений.";
-            this.OkExtractDataButton.UseVisualStyleBackColor = true;
+            this.ExitButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.ExitButton.Location = new System.Drawing.Point(12, 615);
+            this.ExitButton.Name = "ExitButton";
+            this.ExitButton.Size = new System.Drawing.Size(383, 65);
+            this.ExitButton.TabIndex = 14;
+            this.ExitButton.Text = "Закрыть окно.";
+            this.ExitButton.UseVisualStyleBackColor = true;
             // 
             // debtStructureRichTextBox
             // 
@@ -167,17 +166,6 @@
             this.debtStructureRichTextBox.Size = new System.Drawing.Size(596, 419);
             this.debtStructureRichTextBox.TabIndex = 15;
             this.debtStructureRichTextBox.Text = "";
-            // 
-            // editDataButton
-            // 
-            this.editDataButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.editDataButton.Location = new System.Drawing.Point(829, 615);
-            this.editDataButton.Name = "editDataButton";
-            this.editDataButton.Size = new System.Drawing.Size(383, 65);
-            this.editDataButton.TabIndex = 16;
-            this.editDataButton.Text = "Данные извлечены с ошибкой.\r\nСохранить данные и закрыть окно.";
-            this.editDataButton.UseVisualStyleBackColor = true;
-            this.editDataButton.Click += new System.EventHandler(this.editDataButton_Click);
             // 
             // allDebtNumericUpDown
             // 
@@ -191,7 +179,6 @@
             this.allDebtNumericUpDown.Size = new System.Drawing.Size(177, 27);
             this.allDebtNumericUpDown.TabIndex = 17;
             this.allDebtNumericUpDown.ThousandsSeparator = true;
-            this.allDebtNumericUpDown.ValueChanged += new System.EventHandler(this.allDebtNumericUpDown_ValueChanged);
             // 
             // label8
             // 
@@ -233,7 +220,7 @@
             this.label9.TabIndex = 21;
             this.label9.Text = "Реквизиты:";
             // 
-            // dataForm
+            // DataViewForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
@@ -244,9 +231,8 @@
             this.Controls.Add(this.stateDutyNumericUpDown);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.allDebtNumericUpDown);
-            this.Controls.Add(this.editDataButton);
             this.Controls.Add(this.debtStructureRichTextBox);
-            this.Controls.Add(this.OkExtractDataButton);
+            this.Controls.Add(this.ExitButton);
             this.Controls.Add(this.addressTextBox);
             this.Controls.Add(this.bplTextBox);
             this.Controls.Add(this.innTextBox);
@@ -260,9 +246,9 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.fullNameTextBox);
             this.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Name = "dataForm";
+            this.Name = "DataViewForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "dataForm";
+            this.Text = "Просмотр извлеченных данных.";
             ((System.ComponentModel.ISupportInitialize)(this.allDebtNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.stateDutyNumericUpDown)).EndInit();
             this.ResumeLayout(false);
@@ -284,9 +270,8 @@
         private System.Windows.Forms.TextBox innTextBox;
         private System.Windows.Forms.TextBox bplTextBox;
         private System.Windows.Forms.TextBox addressTextBox;
-        private System.Windows.Forms.Button OkExtractDataButton;
+        private System.Windows.Forms.Button ExitButton;
         private System.Windows.Forms.RichTextBox debtStructureRichTextBox;
-        private System.Windows.Forms.Button editDataButton;
         private System.Windows.Forms.NumericUpDown allDebtNumericUpDown;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.NumericUpDown stateDutyNumericUpDown;
