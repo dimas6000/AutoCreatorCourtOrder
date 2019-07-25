@@ -7,94 +7,76 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Text.RegularExpressions; //для регулярных выражений
+using System.Text.RegularExpressions; // Для регулярных выражений.
 using System.IO;
-using Cyriller;
+using Cyriller; // Библиотека для склонения по падежам.
 
 namespace AutoCreatorCourtOrder
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
         }
 
-
-
         /// <summary>
-        /// Поиск данных с помощью регулярных выражений
+        /// Поиск данных во входном документе с помощью регулярных выражений.
         /// </summary>
-        /// <param name="regex">Выражение для поиска</param>
-        private string FindDataWithRegex(Regex regex)
+        /// <param name="regexPattern">Паттерн регулярного выражения.</param>
+        /// <param name="ignoreCase">Если не нужно игнорировать регистр, то передаем сюда RegexOptions.None</param>
+        /// <returns>Строка с результатом поиска.</returns>
+        private string FindDataWithRegex(string regexPattern, RegexOptions ignoreCase = RegexOptions.IgnoreCase)
         {
+            //Явно стоит переписать параметр ignoreCase, выглядит не очень, да и нелогично. Пока не придумал как.
             try
             {
+                // Время поиска в регулярном выражении ограничено 3 секундами
+                Regex regex = new Regex(regexPattern, ignoreCase, TimeSpan.FromSeconds(3));
                 return regex.Match(richTextBox1.Text).Value;
             }
             catch (System.Text.RegularExpressions.RegexMatchTimeoutException)
             {
                 MessageBox.Show("Данные не найдены в тексте, возможно вы пытаетесь использовать неподходящий документ.");
-                return "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ДАННЫЕ НЕ ОБНАРУЖЕНЫ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
+                return "!!!ДАННЫЕ НЕ ОБНАРУЖЕНЫ!!!";
             }
         }
 
         /// <summary>
-        /// Считывает все необходимые данные из файла и сохраняет в структуру
+        /// Считывает все необходимые данные из файла и сохраняет в структуру.
         /// </summary>
         private void readData()
         {
-            // Ограничиваем время поиска во всех регулярках
+            // Находим ФИО.
+            ExtractedData.FullName = FindDataWithRegex(RegexPatterns.FullName);
 
-            // Находим ФИО
-            Regex findFullNameRegex = new Regex(@"(?<=Должник.*)[а-яё]+\s+[а-яё]+\s+[а-яё]+", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
-            Data.FullName = FindDataWithRegex(findFullNameRegex);
+            // Находим адрес.
+            ExtractedData.Address = FindDataWithRegex(RegexPatterns.Address);
 
-            // Находим Адрес
-            Regex findAddress = new Regex(@"(?<=" + Data.FullName + @"\s*)\w.+?(?=\s*Дата)", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
-            Data.Address = FindDataWithRegex(findAddress);
+            // Находим дату рождения.
+            ExtractedData.DateOfBirth = FindDataWithRegex(RegexPatterns.DateOfBirth);
 
-            // Находим Дату рождения
-            Regex findDOB = new Regex(@"(?<=Дата\s*рождения.\s*)\d+.\d+.\d+", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
-            Data.DOB = FindDataWithRegex(findDOB);
+            // Находим место рождения.
+            ExtractedData.BirthPlace = FindDataWithRegex(RegexPatterns.BirthPlace);
 
-            // Находим Место рождения
-            Regex findBPL = new Regex(@"(?<=Место\s*рождения.\s*)\w.+?(?=\s*Общая)", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
-            Data.BPL = FindDataWithRegex(findBPL);
+            // Находим ИНН, не игнорируем регистр!
+            ExtractedData.Inn = FindDataWithRegex(RegexPatterns.Inn, RegexOptions.None);
 
-            // Находим ИНН
-            Regex findINN = new Regex(@"(?<=ИНН\s*)\d+", RegexOptions.None, TimeSpan.FromSeconds(3));
-            Data.INN = FindDataWithRegex(findINN);
+            // Определяем какие задолженности (RegexOptions.None в данном случае костыль, 
+            // т.к. если игнорировать регистр, то регулярка может работать неверно.). 
+            ExtractedData.DebtStructure = FindDataWithRegex(RegexPatterns.DebtStructure, RegexOptions.None).Replace("\n", "\\\n");
+            // Непонятно. Почему-то структура долга и кбк при сохранении в rtf теряет переносы строки если не добавить экранирование к \n.
+            // Пока на всякий случай оставил .Replace т.к. это был костыль для последних документов, без которого ничего не работало.
+            // Причина бага не найдена. Будет исправлено переделкой формата выходного документа из .rtf в .docx.
 
-            // Определяем какие задолженности
-            Regex findDebtDescription = new Regex(@"(?<=недоимки\s*по.\s*)\S(.|\s)+?(?=\s*В\sсоответ\S(.|\s)+?123.8)", RegexOptions.None, TimeSpan.FromSeconds(3));
-            Data.DebtStructure = FindDataWithRegex(findDebtDescription).Replace("\n", "\\\n");
-            // Непонятно. Почему-то структура долга и кбк при сохранении в rtf теряет переносы строки если не добавить экранирование к \n,
-            // при этом чуть ниже КБК\реквизиты копируются прекрасно без каких-то заморочек и переносы строки не теряются. 
-      
-            // Определяем общую сумму задолженности для расчета госпошлины БЕЗ учета копеек
-            Regex findAllDebt = new Regex(@"(?<=Общая\s*сумма.\s*)\d+", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
-            string test = FindDataWithRegex(findAllDebt);
-
-            try
-            {
-                Data.AllDebt = Convert.ToInt32(FindDataWithRegex(findAllDebt));
-            }
-            catch (System.FormatException)
-            {
+            // Определяем общую сумму задолженности для расчета госпошлины БЕЗ учета копеек.
+            if (Int32.TryParse(FindDataWithRegex(RegexPatterns.AllDebt), out int allDebt))
+                ExtractedData.AllDebt = allDebt;
+            else
                 MessageBox.Show("В тексте не было найдено общей суммы задолженности, возможно вы пытаетесь извлечь данные из неподходящего документа");
-                return;//выходим из функции по причине ошибки
-            }
-            // Находим КБК\реквизиты
-            Regex findBankDetails = new Regex(@"Получат(.|\s)+?(?=\s*Прилож)", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(3));
-            Data.BankDetails = FindDataWithRegex(findBankDetails).Replace("\n", "\\\n");
 
-            // ниже склоняем ФИО в родительный падеж
-            string[] SplFullName = Data.FullName.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-            var A = new CyrName();
-            string[] GenitiveFullName = A.Decline(SplFullName[0], SplFullName[1], SplFullName[2], 2);
-            Data.FullNameGenitive = GenitiveFullName[0] + " " + GenitiveFullName[1] + " " + GenitiveFullName[2];
+            // Находим КБК\реквизиты.
+            ExtractedData.BankDetails = FindDataWithRegex(RegexPatterns.BankDetails).Replace("\n", "\\\n");
         }
 
         /// <summary>
@@ -105,7 +87,7 @@ namespace AutoCreatorCourtOrder
 
             try
             {
-                richTextBox1.LoadFile(Data.PathToTemplate);
+                richTextBox1.LoadFile(ExtractedData.PathToTemplate);
             }
             catch (System.IO.IOException)
             {
@@ -117,18 +99,17 @@ namespace AutoCreatorCourtOrder
             {
                 MessageBox.Show("Произошла неизвестная ошибка/n" + ex.ToString());
                 Application.Exit();
-
             }
 
-            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#FULLNAME#", Data.FullName);
-            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#FULLNAMEGENITIVE#", Data.FullNameGenitive);
-            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#DATEOFBIRTH#", Data.DOB);
-            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#PLACEOFBIRTH#", Data.BPL);
-            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#ADDRESS#", Data.Address);
-            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#INDIVIDUALTAXNUMBER#", Data.INN);
-            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#DEBTSTRUCTURE#", Data.DebtStructure);
-            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#GOSPOSHLINA#", Data.StateDuty(Data.AllDebt).ToString());
-            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#BANKDETAILS#", Data.BankDetails);
+            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#FULLNAME#", ExtractedData.FullName);
+            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#FULLNAMEGENITIVE#", ExtractedData.FullNameGenitive);
+            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#DATEOFBIRTH#", ExtractedData.DateOfBirth);
+            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#PLACEOFBIRTH#", ExtractedData.BirthPlace);
+            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#ADDRESS#", ExtractedData.Address);
+            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#INDIVIDUALTAXNUMBER#", ExtractedData.Inn);
+            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#DEBTSTRUCTURE#", ExtractedData.DebtStructure);
+            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#GOSPOSHLINA#", ExtractedData.CalculateStateDuty().ToString());
+            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#BANKDETAILS#", ExtractedData.BankDetails);
 
             saveButton.Enabled = true;
             createCourtOrderButton.Enabled = false;
@@ -152,16 +133,16 @@ namespace AutoCreatorCourtOrder
         /// <param name="rename">Переименовывать ли исходный файл? Удобно с ручном режиме, в автоматическом вылетае</param>
         private void saveCourtOrder(bool rename = true)
         {
-            String directory = Path.GetDirectoryName(Data.PathToTemplate) + "\\Приказы созданные программой";
+            String directory = Path.GetDirectoryName(ExtractedData.PathToTemplate) + "\\Приказы созданные программой";
             if (!Directory.Exists(directory)) //создаем директорию если её не существует
             {
                 Directory.CreateDirectory(directory);
             }
-            richTextBox1.SaveFile(directory + "\\Приказ " + Data.FullName + ".rtf", RichTextBoxStreamType.RichText);
+            richTextBox1.SaveFile(directory + "\\Приказ " + ExtractedData.FullName + ".rtf", RichTextBoxStreamType.RichText);
 
             if (rename)
-                File.Move(Data.PathToProcessedFile, Path.GetDirectoryName(Data.PathToProcessedFile)
-                    + "//!" + Path.GetFileName(Data.PathToProcessedFile));
+                File.Move(ExtractedData.PathToProcessedFile, Path.GetDirectoryName(ExtractedData.PathToProcessedFile)
+                    + "//!" + Path.GetFileName(ExtractedData.PathToProcessedFile));
 
             saveButton.Enabled = false;
         }
@@ -185,8 +166,8 @@ namespace AutoCreatorCourtOrder
                     dialog.Filter = "rtf files (*.rtf)|*.rtf";
                     if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
-                        Data.PathToProcessedFile = dialog.FileName;
-                        richTextBox1.LoadFile(Data.PathToProcessedFile);
+                        ExtractedData.PathToProcessedFile = dialog.FileName;
+                        richTextBox1.LoadFile(ExtractedData.PathToProcessedFile);
                         extractDataButton.Enabled = true; //после открытия файла позволяем извлечь данные
                         directoryCreateOrderButton.Enabled = false;
                     }
@@ -212,7 +193,7 @@ namespace AutoCreatorCourtOrder
             readData();
             extractDataButton.Enabled = false;
             showDataButton.Enabled = true; //после извлечения данных позволяем просмотреть их
-            if (Data.PathToTemplate != null)
+            if (ExtractedData.PathToTemplate != null)
                 createCourtOrderButton.Enabled = true;
         }
 
@@ -221,7 +202,7 @@ namespace AutoCreatorCourtOrder
         /// </summary>
         private void showDataButton_Click(object sender, EventArgs e)
         {
-            dataForm f = new dataForm();
+            DataForm f = new DataForm();
             f.ShowDialog();
         }
 
@@ -246,7 +227,7 @@ namespace AutoCreatorCourtOrder
                     dialog.Filter = "rtf files (*.rtf)|*.rtf";
                     if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
-                        Data.PathToTemplate = dialog.FileName; // используем шаблон приказа
+                        ExtractedData.PathToTemplate = dialog.FileName; // используем шаблон приказа
                         createCourtOrderButton.Enabled = true; // после открытия файла позволяем создание приказа
                         directoryCreateOrderButton.Enabled = true; // или позволяем выбор папки для автосоздания
                     }
