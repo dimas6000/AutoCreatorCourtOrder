@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.RegularExpressions; // Для регулярных выражений.
 using System.IO;
-using Cyriller; // Библиотека для склонения по падежам.
 
 namespace AutoCreatorCourtOrder
 {
@@ -202,7 +201,7 @@ namespace AutoCreatorCourtOrder
         /// </summary>
         private void showDataButton_Click(object sender, EventArgs e)
         {
-            DataForm f = new DataForm();
+                DataViewForm f = new DataViewForm();
             f.ShowDialog();
         }
 
