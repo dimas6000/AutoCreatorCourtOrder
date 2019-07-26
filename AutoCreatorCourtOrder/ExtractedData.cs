@@ -102,7 +102,8 @@ namespace AutoCreatorCourtOrder
         public static int AllDebt { get; set; }
 
         /// <summary>
-        /// Реквизиты, целиком хранится кусок текста, вроде в них меняется только КБК, но это не точно.
+        /// Реквизиты, целиком хранится кусок текста, вроде в них меняется 
+        /// только КБК, но это не точно, поэтому сохраняем целиком.
         /// </summary>
         public static string BankDetails { get; set; }
     }
