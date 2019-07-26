@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Text.RegularExpressions; // Для регулярных выражений.
+using System.Text.RegularExpressions;
 using System.IO;
+using System.Linq;
 
 namespace AutoCreatorCourtOrder
 {
@@ -30,7 +24,7 @@ namespace AutoCreatorCourtOrder
             // Явно стоит переписать параметр ignoreCase, выглядит не очень, да и нелогично. Пока не придумал как.
             try
             {
-                // Время поиска в регулярном выражении ограничивается 3 секундами.
+                // Время поиска в регулярном выражении ограничивается 3 секундами. 
                 Regex regex = new Regex(regexPattern, ignoreCase, TimeSpan.FromSeconds(3));
                 return regex.Match(RichTextBox.Text).Value;
             }
@@ -261,8 +255,11 @@ namespace AutoCreatorCourtOrder
                     // openFileButton.Enabled = false;
                     // ShowDataButton.Enabled = false;
                     // chooseATemplateOrederButton.Enabled = false;
+
                     var files = Directory.GetFiles(dialog.SelectedPath);
-                    foreach (var file in files)
+                    var rtfFiles = files.Where(f => Path.GetExtension(f).ToLower() == ".rtf");
+                    
+                    foreach (var file in rtfFiles)
                     {
                         RichTextBox.LoadFile(file, RichTextBoxStreamType.RichText);
                         ExtractData();
