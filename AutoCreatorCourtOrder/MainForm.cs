@@ -71,7 +71,7 @@ namespace AutoCreatorCourtOrder
             {
                 RichTextBox.LoadFile(PathsData.PathToTemplate, RichTextBoxStreamType.RichText);
             }
-            catch (System.IO.IOException)
+            catch (IOException)
             {
                 MessageBox.Show("Выбранный шаблон не может быть открыт, возможно он используется другой программой, " +
                     "закройте программу использующую файл шаблона и попробуйте заново.");
@@ -79,7 +79,7 @@ namespace AutoCreatorCourtOrder
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Программа будет закрыта т.к. произошла неизвестная ошибка/n" + ex.ToString());
+                MessageBox.Show("Программа будет закрыта т.к. произошла неизвестная ошибка:\n" + ex.ToString());
                 Application.Exit();
             }
 
@@ -113,19 +113,16 @@ namespace AutoCreatorCourtOrder
         /// <summary>
         /// Сохраняет судебный приказ
         /// </summary>
-        /// <param name="rename">Переименовывать ли исходный файл? Удобно с ручном режиме, в автоматическом вылетает</param>
-        private void SaveCourtOrder(bool rename = true)
+        private void SaveCourtOrder()
         {
-            String directory = Path.GetDirectoryName(PathsData.PathToTemplate) + "\\Приказы созданные программой";
+            string directory = Path.Combine(Path.GetDirectoryName(PathsData.PathToTemplate), "Приказы созданные программой");
             if (!Directory.Exists(directory)) //создаем директорию если её не существует
             {
                 Directory.CreateDirectory(directory);
             }
-            RichTextBox.SaveFile(directory + "\\Приказ " + ExtractedData.FullName + ".rtf", RichTextBoxStreamType.RichText);
-
-            if (rename)
-                File.Move(PathsData.PathToFileBeingProcessed, Path.GetDirectoryName(PathsData.PathToFileBeingProcessed)
-                    + "//!" + Path.GetFileName(PathsData.PathToFileBeingProcessed));
+            RichTextBox.SaveFile(Path.Combine(directory, "Приказ ") + ExtractedData.FullName + ".rtf", RichTextBoxStreamType.RichText);
+            File.Move(PathsData.PathToFileBeingProcessed, Path.Combine(Path.GetDirectoryName(PathsData.PathToFileBeingProcessed),
+                "!" + Path.GetFileName(PathsData.PathToFileBeingProcessed)));
 
             // saveButton.Enabled = false;
         }
@@ -163,7 +160,7 @@ namespace AutoCreatorCourtOrder
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Произошла неизвестная ошибка при считывании файла/n" + ex.ToString());
+                MessageBox.Show("Произошла неизвестная ошибка при считывании файла:\n" + ex.ToString());
                 Application.Exit();
             }
         }
@@ -225,7 +222,7 @@ namespace AutoCreatorCourtOrder
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Произошла неизвестная ошибка/n" + ex.ToString());
+                MessageBox.Show("Произошла неизвестная ошибка:\n" + ex.ToString());
                 Application.Exit();
             }
         }
@@ -258,14 +255,19 @@ namespace AutoCreatorCourtOrder
 
                     var files = Directory.GetFiles(dialog.SelectedPath);
                     var rtfFiles = files.Where(f => Path.GetExtension(f).ToLower() == ".rtf");
-                    
+
                     foreach (var file in rtfFiles)
                     {
-                        RichTextBox.LoadFile(file, RichTextBoxStreamType.RichText);
+                        // Костыль для переименования файла, надо переработать само переименование в принципе.
+                        PathsData.PathToFileBeingProcessed = file;
+
+                        RichTextBox.LoadFile(PathsData.PathToFileBeingProcessed, RichTextBoxStreamType.RichText);
                         ExtractData();
                         CreateCourtOrder();
-                        SaveCourtOrder(false);
+                        SaveCourtOrder();
                     }
+
+                    MessageBox.Show("Обработано документов: " + rtfFiles.Count().ToString());
                 }
             }
         }
