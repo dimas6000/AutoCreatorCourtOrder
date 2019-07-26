@@ -27,14 +27,14 @@ namespace AutoCreatorCourtOrder
         /// <returns>Строка с результатом поиска.</returns>
         private string FindDataWithRegex(string regexPattern, RegexOptions ignoreCase = RegexOptions.IgnoreCase)
         {
-            //Явно стоит переписать параметр ignoreCase, выглядит не очень, да и нелогично. Пока не придумал как.
+            // Явно стоит переписать параметр ignoreCase, выглядит не очень, да и нелогично. Пока не придумал как.
             try
             {
                 // Время поиска в регулярном выражении ограничивается 3 секундами.
                 Regex regex = new Regex(regexPattern, ignoreCase, TimeSpan.FromSeconds(3));
                 return regex.Match(RichTextBox.Text).Value;
             }
-            catch (System.Text.RegularExpressions.RegexMatchTimeoutException)
+            catch (RegexMatchTimeoutException)
             {
                 MessageBox.Show("Данные не найдены в тексте, возможно вы пытаетесь использовать неподходящий документ.");
                 return "!!!ДАННЫЕ НЕ ОБНАРУЖЕНЫ!!!";
