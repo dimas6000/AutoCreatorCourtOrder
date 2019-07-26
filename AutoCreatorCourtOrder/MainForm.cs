@@ -75,7 +75,7 @@ namespace AutoCreatorCourtOrder
         {
             try
             {
-                RichTextBox.LoadFile(PathsData.PathToTemplate);
+                RichTextBox.LoadFile(PathsData.PathToTemplate, RichTextBoxStreamType.RichText);
             }
             catch (System.IO.IOException)
             {
@@ -156,7 +156,7 @@ namespace AutoCreatorCourtOrder
                     if (dialog.ShowDialog() == DialogResult.OK)
                     {
                         PathsData.PathToFileBeingProcessed = dialog.FileName;
-                        RichTextBox.LoadFile(PathsData.PathToFileBeingProcessed);
+                        RichTextBox.LoadFile(PathsData.PathToFileBeingProcessed, RichTextBoxStreamType.RichText);
                         //  ExtractDataButton.Enabled = true; //после открытия файла позволяем извлечь данные
                         //  DirectoryCreateOrderButton.Enabled = false;
                     }
@@ -264,7 +264,7 @@ namespace AutoCreatorCourtOrder
                     var files = Directory.GetFiles(dialog.SelectedPath);
                     foreach (var file in files)
                     {
-                        RichTextBox.LoadFile(file);
+                        RichTextBox.LoadFile(file, RichTextBoxStreamType.RichText);
                         ExtractData();
                         CreateCourtOrder();
                         SaveCourtOrder(false);

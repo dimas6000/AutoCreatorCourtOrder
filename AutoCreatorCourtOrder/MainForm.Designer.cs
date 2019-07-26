@@ -38,12 +38,12 @@
             this.DirectoryCreateOrderButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // richTextBox1
+            // RichTextBox
             // 
             this.RichTextBox.AcceptsTab = true;
             this.RichTextBox.DetectUrls = false;
             this.RichTextBox.Location = new System.Drawing.Point(13, 13);
-            this.RichTextBox.Name = "richTextBox1";
+            this.RichTextBox.Name = "RichTextBox";
             this.RichTextBox.ReadOnly = true;
             this.RichTextBox.Size = new System.Drawing.Size(1200, 613);
             this.RichTextBox.TabIndex = 0;
@@ -59,33 +59,30 @@
             this.openFileButton.UseVisualStyleBackColor = true;
             this.openFileButton.Click += new System.EventHandler(this.OpenFileButton_Click);
             // 
-            // extractDataButton
+            // ExtractDataButton
             // 
-            this.ExtractDataButton.Enabled = false;
             this.ExtractDataButton.Location = new System.Drawing.Point(181, 632);
-            this.ExtractDataButton.Name = "extractDataButton";
+            this.ExtractDataButton.Name = "ExtractDataButton";
             this.ExtractDataButton.Size = new System.Drawing.Size(163, 48);
             this.ExtractDataButton.TabIndex = 2;
             this.ExtractDataButton.Text = "Извлечь данные";
             this.ExtractDataButton.UseVisualStyleBackColor = true;
             this.ExtractDataButton.Click += new System.EventHandler(this.ExtractDataButton_Click);
             // 
-            // showDataButton
+            // ShowDataButton
             // 
-            this.ShowDataButton.Enabled = false;
             this.ShowDataButton.Location = new System.Drawing.Point(181, 687);
-            this.ShowDataButton.Name = "showDataButton";
+            this.ShowDataButton.Name = "ShowDataButton";
             this.ShowDataButton.Size = new System.Drawing.Size(163, 48);
             this.ShowDataButton.TabIndex = 3;
             this.ShowDataButton.Text = "Просмотреть данные";
             this.ShowDataButton.UseVisualStyleBackColor = true;
             this.ShowDataButton.Click += new System.EventHandler(this.ShowDataButton_Click);
             // 
-            // createCourtOrderButton
+            // CreateCourtOrderButton
             // 
-            this.CreateCourtOrderButton.Enabled = false;
             this.CreateCourtOrderButton.Location = new System.Drawing.Point(350, 632);
-            this.CreateCourtOrderButton.Name = "createCourtOrderButton";
+            this.CreateCourtOrderButton.Name = "CreateCourtOrderButton";
             this.CreateCourtOrderButton.Size = new System.Drawing.Size(163, 48);
             this.CreateCourtOrderButton.TabIndex = 4;
             this.CreateCourtOrderButton.Text = "Создать \r\nсудебный приказ";
@@ -104,7 +101,6 @@
             // 
             // saveButton
             // 
-            this.saveButton.Enabled = false;
             this.saveButton.Location = new System.Drawing.Point(519, 632);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(163, 48);
@@ -113,11 +109,10 @@
             this.saveButton.UseVisualStyleBackColor = true;
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
-            // directoryCreateOrderButton
+            // DirectoryCreateOrderButton
             // 
-            this.DirectoryCreateOrderButton.Enabled = false;
             this.DirectoryCreateOrderButton.Location = new System.Drawing.Point(880, 633);
-            this.DirectoryCreateOrderButton.Name = "directoryCreateOrderButton";
+            this.DirectoryCreateOrderButton.Name = "DirectoryCreateOrderButton";
             this.DirectoryCreateOrderButton.Size = new System.Drawing.Size(332, 102);
             this.DirectoryCreateOrderButton.TabIndex = 7;
             this.DirectoryCreateOrderButton.Text = "Выбрать папку с заявлениями для создания судебных приказов и создать приказы для " +
@@ -125,7 +120,7 @@
             this.DirectoryCreateOrderButton.UseVisualStyleBackColor = true;
             this.DirectoryCreateOrderButton.Click += new System.EventHandler(this.DirectoryCreateOrderButton_Click);
             // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
@@ -140,7 +135,7 @@
             this.Controls.Add(this.openFileButton);
             this.Controls.Add(this.RichTextBox);
             this.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.ResumeLayout(false);
