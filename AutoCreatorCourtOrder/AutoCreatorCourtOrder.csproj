@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PathsData.cs" />
     <Compile Include="RegexPatterns.cs" />
     <Compile Include="ExtractedData.cs" />
     <Compile Include="DataViewForm.cs">
