@@ -30,9 +30,9 @@ namespace AutoCreatorCourtOrder
             //Явно стоит переписать параметр ignoreCase, выглядит не очень, да и нелогично. Пока не придумал как.
             try
             {
-                // Время поиска в регулярном выражении ограничено 3 секундами
+                // Время поиска в регулярном выражении ограничивается 3 секундами.
                 Regex regex = new Regex(regexPattern, ignoreCase, TimeSpan.FromSeconds(3));
-                return regex.Match(richTextBox1.Text).Value;
+                return regex.Match(RichTextBox.Text).Value;
             }
             catch (System.Text.RegularExpressions.RegexMatchTimeoutException)
             {
@@ -42,31 +42,22 @@ namespace AutoCreatorCourtOrder
         }
 
         /// <summary>
-        /// Считывает все необходимые данные из файла и сохраняет в структуру.
+        /// Извлекает все необходимые данные из файла и сохраняет в класс ExtractedData.
         /// </summary>
-        private void readData()
+        private void ExtractData()
         {
-            // Находим ФИО.
             ExtractedData.FullName = FindDataWithRegex(RegexPatterns.FullName);
-
-            // Находим адрес.
             ExtractedData.Address = FindDataWithRegex(RegexPatterns.Address);
-
-            // Находим дату рождения.
             ExtractedData.DateOfBirth = FindDataWithRegex(RegexPatterns.DateOfBirth);
-
-            // Находим место рождения.
             ExtractedData.BirthPlace = FindDataWithRegex(RegexPatterns.BirthPlace);
-
-            // Находим ИНН, не игнорируем регистр!
             ExtractedData.Inn = FindDataWithRegex(RegexPatterns.Inn, RegexOptions.None);
 
-            // Определяем какие задолженности (RegexOptions.None в данном случае костыль, 
-            // т.к. если игнорировать регистр, то регулярка может работать неверно.). 
-            ExtractedData.DebtStructure = FindDataWithRegex(RegexPatterns.DebtStructure, RegexOptions.None).Replace("\n", "\\\n");
             // Непонятно. Почему-то структура долга и кбк при сохранении в rtf теряет переносы строки если не добавить экранирование к \n.
             // Пока на всякий случай оставил .Replace т.к. это был костыль для последних документов, без которого ничего не работало.
             // Причина бага не найдена. Будет исправлено переделкой формата выходного документа из .rtf в .docx.
+            // RegexOptions.None в данном случае костыль,если игнорировать регистр, то регулярка может работать неверно.). 
+            ExtractedData.DebtStructure = FindDataWithRegex(RegexPatterns.DebtStructure, RegexOptions.None).Replace("\n", "\\\n");
+            ExtractedData.BankDetails = FindDataWithRegex(RegexPatterns.BankDetails).Replace("\n", "\\\n");
 
             // Определяем общую сумму задолженности для расчета госпошлины БЕЗ учета копеек.
             if (Int32.TryParse(FindDataWithRegex(RegexPatterns.AllDebt), out int allDebt))
@@ -74,19 +65,17 @@ namespace AutoCreatorCourtOrder
             else
                 MessageBox.Show("В тексте не было найдено общей суммы задолженности, возможно вы пытаетесь извлечь данные из неподходящего документа");
 
-            // Находим КБК\реквизиты.
-            ExtractedData.BankDetails = FindDataWithRegex(RegexPatterns.BankDetails).Replace("\n", "\\\n");
+            // Если сумму не нашли, явно что-то не так, не даем работать дальше!!!
         }
 
         /// <summary>
         /// Создает судебный приказ по шаблону
         /// </summary>
-        private void createCourtOrder()
+        private void CreateCourtOrder()
         {
-
             try
             {
-                richTextBox1.LoadFile(ExtractedData.PathToTemplate);
+                RichTextBox.LoadFile(PathsData.PathToTemplate);
             }
             catch (System.IO.IOException)
             {
@@ -96,23 +85,24 @@ namespace AutoCreatorCourtOrder
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Произошла неизвестная ошибка/n" + ex.ToString());
+                MessageBox.Show("Программа будет закрыта т.к. произошла неизвестная ошибка/n" + ex.ToString());
                 Application.Exit();
             }
 
-            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#FULLNAME#", ExtractedData.FullName);
-            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#FULLNAMEGENITIVE#", ExtractedData.FullNameGenitive);
-            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#DATEOFBIRTH#", ExtractedData.DateOfBirth);
-            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#PLACEOFBIRTH#", ExtractedData.BirthPlace);
-            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#ADDRESS#", ExtractedData.Address);
-            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#INDIVIDUALTAXNUMBER#", ExtractedData.Inn);
-            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#DEBTSTRUCTURE#", ExtractedData.DebtStructure);
-            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#GOSPOSHLINA#", ExtractedData.CalculateStateDuty().ToString());
-            richTextBox1.Rtf = richTextBox1.Rtf.Replace("#BANKDETAILS#", ExtractedData.BankDetails);
+            RichTextBox.Rtf = RichTextBox.Rtf.Replace("#FULLNAME#", ExtractedData.FullName);
+            RichTextBox.Rtf = RichTextBox.Rtf.Replace("#FULLNAMEGENITIVE#", ExtractedData.FullNameGenitive);
+            RichTextBox.Rtf = RichTextBox.Rtf.Replace("#DATEOFBIRTH#", ExtractedData.DateOfBirth);
+            RichTextBox.Rtf = RichTextBox.Rtf.Replace("#PLACEOFBIRTH#", ExtractedData.BirthPlace);
+            RichTextBox.Rtf = RichTextBox.Rtf.Replace("#ADDRESS#", ExtractedData.Address);
+            RichTextBox.Rtf = RichTextBox.Rtf.Replace("#INDIVIDUALTAXNUMBER#", ExtractedData.Inn);
+            RichTextBox.Rtf = RichTextBox.Rtf.Replace("#DEBTSTRUCTURE#", ExtractedData.DebtStructure);
+            RichTextBox.Rtf = RichTextBox.Rtf.Replace("#GOSPOSHLINA#", ExtractedData.CalculateStateDuty().ToString());
+            RichTextBox.Rtf = RichTextBox.Rtf.Replace("#BANKDETAILS#", ExtractedData.BankDetails);
 
+            // Вроде лучше иначе активировать\деактивировать элементы формы (с т.з. оформления кода). Узнать как. 
             saveButton.Enabled = true;
-            createCourtOrderButton.Enabled = false;
-            showDataButton.Enabled = false;
+            CreateCourtOrderButton.Enabled = false;
+            ShowDataButton.Enabled = false;
             /// <summary>
             /// #FULLNAME# - заменяется на ФИО 
             /// #GENITIVE# - заменяется на ФИО в родительном
@@ -125,23 +115,23 @@ namespace AutoCreatorCourtOrder
             /// #BANKDETAILS# - заменяется на реквизиты
             ///<summary>
         }
-
+        
         /// <summary>
         /// Сохраняет судебный приказ
         /// </summary>
-        /// <param name="rename">Переименовывать ли исходный файл? Удобно с ручном режиме, в автоматическом вылетае</param>
-        private void saveCourtOrder(bool rename = true)
+        /// <param name="rename">Переименовывать ли исходный файл? Удобно с ручном режиме, в автоматическом вылетает</param>
+        private void SaveCourtOrder(bool rename = true)
         {
-            String directory = Path.GetDirectoryName(ExtractedData.PathToTemplate) + "\\Приказы созданные программой";
+            String directory = Path.GetDirectoryName(PathsData.PathToTemplate) + "\\Приказы созданные программой";
             if (!Directory.Exists(directory)) //создаем директорию если её не существует
             {
                 Directory.CreateDirectory(directory);
             }
-            richTextBox1.SaveFile(directory + "\\Приказ " + ExtractedData.FullName + ".rtf", RichTextBoxStreamType.RichText);
+            RichTextBox.SaveFile(directory + "\\Приказ " + ExtractedData.FullName + ".rtf", RichTextBoxStreamType.RichText);
 
             if (rename)
-                File.Move(ExtractedData.PathToProcessedFile, Path.GetDirectoryName(ExtractedData.PathToProcessedFile)
-                    + "//!" + Path.GetFileName(ExtractedData.PathToProcessedFile));
+                File.Move(PathsData.PathToFileBeingProcessed, Path.GetDirectoryName(PathsData.PathToFileBeingProcessed)
+                    + "//!" + Path.GetFileName(PathsData.PathToFileBeingProcessed));
 
             saveButton.Enabled = false;
         }
@@ -149,13 +139,13 @@ namespace AutoCreatorCourtOrder
         /// <summary>
         /// Загружает текст из файла в richTextBox
         /// </summary>
-        private void openFileButton_Click(object sender, EventArgs e)
+        private void OpenFileButton_Click(object sender, EventArgs e)
         {
-            createCourtOrderButton.Enabled = false;
-            saveButton.Enabled = false;
+          //  CreateCourtOrderButton.Enabled = false;
+          //  saveButton.Enabled = false;
             try
             {
-                // чужой код почти без изменений во всём using
+                // Чужой код почти без изменений во всём using.
                 using (OpenFileDialog dialog = new OpenFileDialog())
                 {
                     dialog.CheckFileExists = true;
@@ -163,17 +153,17 @@ namespace AutoCreatorCourtOrder
                     dialog.Multiselect = false;
                     dialog.Title = "Выберите файл";
                     dialog.Filter = "rtf files (*.rtf)|*.rtf";
-                    if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    if (dialog.ShowDialog() == DialogResult.OK)
                     {
-                        ExtractedData.PathToProcessedFile = dialog.FileName;
-                        richTextBox1.LoadFile(ExtractedData.PathToProcessedFile);
-                        extractDataButton.Enabled = true; //после открытия файла позволяем извлечь данные
-                        directoryCreateOrderButton.Enabled = false;
+                        PathsData.PathToFileBeingProcessed = dialog.FileName;
+                        RichTextBox.LoadFile(PathsData.PathToFileBeingProcessed);
+                      //  ExtractDataButton.Enabled = true; //после открытия файла позволяем извлечь данные
+                      //  DirectoryCreateOrderButton.Enabled = false;
                     }
                 }
 
             }
-            catch (System.IO.IOException)
+            catch (IOException)
             {
                 MessageBox.Show("Выбранный файл не может быть открыт, возможно он используется другой программой.");
             }
@@ -185,35 +175,38 @@ namespace AutoCreatorCourtOrder
         }
 
         /// <summary>
-        /// При нажатии кнопки находит все нужные данные и сохраняет в отдельные строки
+        /// При нажатии кнопки извлекает все необходимые данные и сохраняет в отдельные строки.
         /// </summary>
-        private void extractDataButton_Click(object sender, EventArgs e)
+        private void ExtractDataButton_Click(object sender, EventArgs e)
         {
-            readData();
-            extractDataButton.Enabled = false;
-            showDataButton.Enabled = true; //после извлечения данных позволяем просмотреть их
-            if (ExtractedData.PathToTemplate != null)
-                createCourtOrderButton.Enabled = true;
+            ExtractData();
+            ExtractDataButton.Enabled = false;
+          //  ShowDataButton.Enabled = true; //после извлечения данных позволяем просмотреть их
+          //  if (PathsData.PathToTemplate != null)
+          //      CreateCourtOrderButton.Enabled = true;
         }
 
         /// <summary>
-        /// Отображает извлеченные данные в отдельном окне с возможностью редактирования
+        /// Отображает извлеченные данные в отдельном окне.
         /// </summary>
-        private void showDataButton_Click(object sender, EventArgs e)
+        private void ShowDataButton_Click(object sender, EventArgs e)
         {
-                DataViewForm f = new DataViewForm();
-            f.ShowDialog();
-        }
-
-        private void createCourtOrderButton_Click(object sender, EventArgs e)
-        {
-            createCourtOrder();
+            using (DataViewForm f = new DataViewForm())
+                f.ShowDialog();
         }
 
         /// <summary>
-        /// Выбирем шаблон для создания судебного приказа
+        /// Создает судебный приказ по шаблону.
         /// </summary>
-        private void chooseATemplateOrederButton_Click(object sender, EventArgs e)
+        private void CreateCourtOrderButton_Click(object sender, EventArgs e)
+        {
+            CreateCourtOrder();
+        }
+
+        /// <summary>
+        /// Выбираем шаблон для создания судебного приказа.
+        /// </summary>
+        private void ChooseATemplateOrderButton_Click(object sender, EventArgs e)
         {
             try
             {
@@ -222,15 +215,19 @@ namespace AutoCreatorCourtOrder
                     dialog.CheckFileExists = true;
                     dialog.CheckPathExists = true;
                     dialog.Multiselect = false;
-                    dialog.Title = "Выберите файл шаблона";
+                    dialog.Title = "Выберите файл шаблона.";
                     dialog.Filter = "rtf files (*.rtf)|*.rtf";
                     if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
-                        ExtractedData.PathToTemplate = dialog.FileName; // используем шаблон приказа
-                        createCourtOrderButton.Enabled = true; // после открытия файла позволяем создание приказа
-                        directoryCreateOrderButton.Enabled = true; // или позволяем выбор папки для автосоздания
+                        PathsData.PathToTemplate = dialog.FileName; // Сохраняем путь к шаблону приказа.
+                       // CreateCourtOrderButton.Enabled = true; // после открытия файла позволяем создание приказа
+                       // DirectoryCreateOrderButton.Enabled = true; // или позволяем выбор папки для автосоздания
                     }
                 }
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("Выбранный файл не может быть открыт, возможно он используется другой программой.");
             }
             catch (Exception ex)
             {
@@ -241,11 +238,11 @@ namespace AutoCreatorCourtOrder
 
 
         /// <summary>
-        /// Сохраняет файл из richTextBox1
+        /// Сохраняет созданный судебный приказ из RichTextBox.
         /// </summary>
         private void saveButton_Click(object sender, EventArgs e)
         {
-            saveCourtOrder();
+            SaveCourtOrder();
         }
 
         private void directoryCreateOrderButton_Click(object sender, EventArgs e)
@@ -256,19 +253,19 @@ namespace AutoCreatorCourtOrder
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     saveButton.Enabled = false;
-                    createCourtOrderButton.Enabled = false;
-                    extractDataButton.Enabled = false;
+                    CreateCourtOrderButton.Enabled = false;
+                    ExtractDataButton.Enabled = false;
                     openFileButton.Enabled = false;
-                    showDataButton.Enabled = false;
+                    ShowDataButton.Enabled = false;
                     chooseATemplateOrederButton.Enabled = false;
 
                     var files = Directory.GetFiles(dialog.SelectedPath);
                     foreach (var file in files)
                     {
-                        richTextBox1.LoadFile(file);
-                        readData();
-                        createCourtOrder();
-                        saveCourtOrder(false);
+                        RichTextBox.LoadFile(file);
+                        ExtractData();
+                        CreateCourtOrder();
+                        SaveCourtOrder(false);
                     }
                 }
             }
