@@ -100,9 +100,9 @@ namespace AutoCreatorCourtOrder
             RichTextBox.Rtf = RichTextBox.Rtf.Replace("#BANKDETAILS#", ExtractedData.BankDetails);
 
             // Вроде лучше иначе активировать\деактивировать элементы формы (с т.з. оформления кода). Узнать как. 
-            saveButton.Enabled = true;
-            CreateCourtOrderButton.Enabled = false;
-            ShowDataButton.Enabled = false;
+            // saveButton.Enabled = true;
+            // CreateCourtOrderButton.Enabled = false;
+            // ShowDataButton.Enabled = false;
             /// <summary>
             /// #FULLNAME# - заменяется на ФИО 
             /// #GENITIVE# - заменяется на ФИО в родительном
@@ -115,7 +115,7 @@ namespace AutoCreatorCourtOrder
             /// #BANKDETAILS# - заменяется на реквизиты
             ///<summary>
         }
-        
+
         /// <summary>
         /// Сохраняет судебный приказ
         /// </summary>
@@ -133,7 +133,7 @@ namespace AutoCreatorCourtOrder
                 File.Move(PathsData.PathToFileBeingProcessed, Path.GetDirectoryName(PathsData.PathToFileBeingProcessed)
                     + "//!" + Path.GetFileName(PathsData.PathToFileBeingProcessed));
 
-            saveButton.Enabled = false;
+            // saveButton.Enabled = false;
         }
 
         /// <summary>
@@ -141,8 +141,8 @@ namespace AutoCreatorCourtOrder
         /// </summary>
         private void OpenFileButton_Click(object sender, EventArgs e)
         {
-          //  CreateCourtOrderButton.Enabled = false;
-          //  saveButton.Enabled = false;
+            //  CreateCourtOrderButton.Enabled = false;
+            //  saveButton.Enabled = false;
             try
             {
                 // Чужой код почти без изменений во всём using.
@@ -157,8 +157,8 @@ namespace AutoCreatorCourtOrder
                     {
                         PathsData.PathToFileBeingProcessed = dialog.FileName;
                         RichTextBox.LoadFile(PathsData.PathToFileBeingProcessed);
-                      //  ExtractDataButton.Enabled = true; //после открытия файла позволяем извлечь данные
-                      //  DirectoryCreateOrderButton.Enabled = false;
+                        //  ExtractDataButton.Enabled = true; //после открытия файла позволяем извлечь данные
+                        //  DirectoryCreateOrderButton.Enabled = false;
                     }
                 }
 
@@ -180,10 +180,10 @@ namespace AutoCreatorCourtOrder
         private void ExtractDataButton_Click(object sender, EventArgs e)
         {
             ExtractData();
-            ExtractDataButton.Enabled = false;
-          //  ShowDataButton.Enabled = true; //после извлечения данных позволяем просмотреть их
-          //  if (PathsData.PathToTemplate != null)
-          //      CreateCourtOrderButton.Enabled = true;
+            //  ExtractDataButton.Enabled = false;
+            //  ShowDataButton.Enabled = true; //после извлечения данных позволяем просмотреть их
+            //  if (PathsData.PathToTemplate != null)
+            //      CreateCourtOrderButton.Enabled = true;
         }
 
         /// <summary>
@@ -220,8 +220,8 @@ namespace AutoCreatorCourtOrder
                     if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
                         PathsData.PathToTemplate = dialog.FileName; // Сохраняем путь к шаблону приказа.
-                       // CreateCourtOrderButton.Enabled = true; // после открытия файла позволяем создание приказа
-                       // DirectoryCreateOrderButton.Enabled = true; // или позволяем выбор папки для автосоздания
+                                                                    // CreateCourtOrderButton.Enabled = true; // после открытия файла позволяем создание приказа
+                                                                    // DirectoryCreateOrderButton.Enabled = true; // или позволяем выбор папки для автосоздания
                     }
                 }
             }
@@ -245,20 +245,22 @@ namespace AutoCreatorCourtOrder
             SaveCourtOrder();
         }
 
-        private void directoryCreateOrderButton_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Автоматическое создание судебных приказов для всех файлов в папке. Сырое!
+        /// </summary>
+        private void DirectoryCreateOrderButton_Click(object sender, EventArgs e)
         {
             using (FolderBrowserDialog dialog = new FolderBrowserDialog())
             {
                 dialog.Description = "Выбор директории";
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    saveButton.Enabled = false;
-                    CreateCourtOrderButton.Enabled = false;
-                    ExtractDataButton.Enabled = false;
-                    openFileButton.Enabled = false;
-                    ShowDataButton.Enabled = false;
-                    chooseATemplateOrederButton.Enabled = false;
-
+                    // saveButton.Enabled = false;
+                    // CreateCourtOrderButton.Enabled = false;
+                    // ExtractDataButton.Enabled = false;
+                    // openFileButton.Enabled = false;
+                    // ShowDataButton.Enabled = false;
+                    // chooseATemplateOrederButton.Enabled = false;
                     var files = Directory.GetFiles(dialog.SelectedPath);
                     foreach (var file in files)
                     {
@@ -270,7 +272,5 @@ namespace AutoCreatorCourtOrder
                 }
             }
         }
-
-
     }
 }

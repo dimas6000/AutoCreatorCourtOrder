@@ -123,7 +123,7 @@
             this.DirectoryCreateOrderButton.Text = "Выбрать папку с заявлениями для создания судебных приказов и создать приказы для " +
     "всех файлов из папки";
             this.DirectoryCreateOrderButton.UseVisualStyleBackColor = true;
-            this.DirectoryCreateOrderButton.Click += new System.EventHandler(this.directoryCreateOrderButton_Click);
+            this.DirectoryCreateOrderButton.Click += new System.EventHandler(this.DirectoryCreateOrderButton_Click);
             // 
             // Form1
             // 
