@@ -27,8 +27,7 @@ namespace AutoCreatorCourtOrder
             }
             return string.Join(" ", s);
         }
-
-
+        
         /// <summary>
         /// Производит расчет госпошлины. 
         /// </summary>
@@ -58,6 +57,7 @@ namespace AutoCreatorCourtOrder
             set
             {
                 _fullName = _firstUpper(value);
+
                 //Сразу склоняем ФИО в родительный падеж с помощью Cyriller'a.
                 string[] splFullName = FullName.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 var toGenitive = new CyrName();
@@ -105,21 +105,5 @@ namespace AutoCreatorCourtOrder
         /// Реквизиты, целиком хранится кусок текста, вроде в них меняется только КБК, но это не точно.
         /// </summary>
         public static string BankDetails { get; set; }
-
-        /// <summary>
-        /// Путь к шаблону приказа.
-        /// </summary>
-        public static string PathToTemplate { get; set; }
-
-        /// <summary>
-        /// Путь к обрабатываемому файлу, для изменения имени.
-        /// </summary>
-        public static string PathToProcessedFile { get; set; }
-
-        /// <summary>
-        /// Путь к папке с приказами для обработки всех сразу.
-        /// </summary>
-        //  public static string PathToFolder { get; set; }
-
     }
 }
