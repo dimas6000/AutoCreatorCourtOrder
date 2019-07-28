@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace AutoCreatorCourtOrder
 {
     // Справочник по регуляркам: https://docs.microsoft.com/ru-ru/dotnet/standard/base-types/regular-expression-language-quick-reference
-    static class RegexPatterns
+    /// <summary>
+    /// Хранит все регулярные выражения и функцию для работы с ними.
+    /// </summary>
+    static class MyRegex
     {
         // @ перед строковым литералом позволяет переходить на новую строку, использовать табуляцию
         // и т.п. без управляющих последовательностей (кроме ", она записывается как "").
@@ -35,9 +36,9 @@ namespace AutoCreatorCourtOrder
         public static string BirthPlace { get { return @"(?<=Место\s*рождения.\s*)\w.+?(?=\s*Общая)"; } }
 
         /// <summary>
-        /// Находит ИНН. Число после слова "ИНН". Регистр не игнорировать, т.к. ИНН всегда капсом.
+        /// Находит ИНН. Число после слова "ИНН". 
         /// </summary>
-        public static string Inn { get { return @"(?<=ИНН\s*)\d+"; } }
+        public static string Inn { get { return @"(?<=\bИНН\s*)\d+"; } }
 
         /// <summary>
         /// Находит описание задолженностей. Подстрока от слов "Недоимки по" до "В соотвествии со статьёй 123.8". 
@@ -52,9 +53,38 @@ namespace AutoCreatorCourtOrder
         public static string AllDebt { get { return @"(?<=Общая\s*сумма.\s*)\d+"; } }
 
         /// <summary>
-        /// Находит КБК\реквизиты. Весь текст от слова "Получатель" до "Приложение".
+        /// Находит КБК\реквизиты. Весь текст от слова "Получатель" (включительно) до "Приложение".
         /// </summary>
         public static string BankDetails { get { return @"Получат(.|\s)+?(?=\s*Прилож)"; } }
+
+        /// <summary>
+        /// Поиск данных во входном документе с помощью регулярных выражений.
+        /// </summary>
+        /// <param name="textForSearch">Текст в котором осуществляется поиск.</param>
+        /// <param name="regexPattern">Паттерн регулярного выражения</param>
+        /// <param name="regexOption">Если нужно игнорировать регистр, то передаем сюда RegexOptions.IgnoreCase</param>
+        /// <returns></returns>
+        public static string FindDataWithRegex(string textForSearch, string regexPattern, RegexOptions regexOption = RegexOptions.None)
+        {
+            try
+            {
+                // Время поиска в регулярном выражении ограничивается 5 секундами т.к. обрабатываемые документы маленькие. 
+                Regex regex = new Regex(regexPattern, regexOption, TimeSpan.FromSeconds(5));
+                if (regex.IsMatch(textForSearch))
+                    return regex.Match(textForSearch).Value;
+                else
+                {
+                    MessageBox.Show("Данные не найдены в тексте, возможно вы пытаетесь использовать неподходящий документ.");
+                    return "!!!ДАННЫЕ НЕ ОБНАРУЖЕНЫ!!!";
+                }
+            }
+            catch (RegexMatchTimeoutException)
+            {
+                MessageBox.Show("Данные не найдены в тексте, возможно вы пытаетесь использовать неподходящий документ.");
+                return "!!!ДАННЫЕ НЕ ОБНАРУЖЕНЫ!!!";
+            }
+        }
+
     }
 }
 
