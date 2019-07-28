@@ -50,7 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PathsData.cs" />
-    <Compile Include="RegexPatterns.cs" />
+    <Compile Include="MyRegex.cs" />
     <Compile Include="ExtractedData.cs" />
     <Compile Include="DataViewForm.cs">
       <SubType>Form</SubType>

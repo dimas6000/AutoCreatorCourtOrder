@@ -73,14 +73,11 @@ namespace AutoCreatorCourtOrder
                 if (regex.IsMatch(textForSearch))
                     return regex.Match(textForSearch).Value;
                 else
-                {
-                    MessageBox.Show("Данные не найдены в тексте, возможно вы пытаетесь использовать неподходящий документ.");
                     return "!!!ДАННЫЕ НЕ ОБНАРУЖЕНЫ!!!";
-                }
             }
             catch (RegexMatchTimeoutException)
             {
-                MessageBox.Show("Данные не найдены в тексте, возможно вы пытаетесь использовать неподходящий документ.");
+                MessageBox.Show("Данные не найдены в тексте за 5 секунд поиска, возможно вы пытаетесь использовать неподходящий документ.");
                 return "!!!ДАННЫЕ НЕ ОБНАРУЖЕНЫ!!!";
             }
         }
