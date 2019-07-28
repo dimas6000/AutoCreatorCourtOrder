@@ -51,7 +51,7 @@
             // 
             // OpenFileButton
             // 
-            this.OpenFileButton.Location = new System.Drawing.Point(12, 632);
+            this.OpenFileButton.Location = new System.Drawing.Point(182, 632);
             this.OpenFileButton.Name = "OpenFileButton";
             this.OpenFileButton.Size = new System.Drawing.Size(163, 48);
             this.OpenFileButton.TabIndex = 1;
@@ -61,7 +61,7 @@
             // 
             // ExtractDataButton
             // 
-            this.ExtractDataButton.Location = new System.Drawing.Point(181, 632);
+            this.ExtractDataButton.Location = new System.Drawing.Point(351, 632);
             this.ExtractDataButton.Name = "ExtractDataButton";
             this.ExtractDataButton.Size = new System.Drawing.Size(163, 48);
             this.ExtractDataButton.TabIndex = 2;
@@ -71,7 +71,7 @@
             // 
             // ShowDataButton
             // 
-            this.ShowDataButton.Location = new System.Drawing.Point(182, 686);
+            this.ShowDataButton.Location = new System.Drawing.Point(351, 686);
             this.ShowDataButton.Name = "ShowDataButton";
             this.ShowDataButton.Size = new System.Drawing.Size(163, 48);
             this.ShowDataButton.TabIndex = 3;
@@ -81,7 +81,7 @@
             // 
             // CreateCourtOrderButton
             // 
-            this.CreateCourtOrderButton.Location = new System.Drawing.Point(350, 632);
+            this.CreateCourtOrderButton.Location = new System.Drawing.Point(520, 632);
             this.CreateCourtOrderButton.Name = "CreateCourtOrderButton";
             this.CreateCourtOrderButton.Size = new System.Drawing.Size(163, 48);
             this.CreateCourtOrderButton.TabIndex = 4;
@@ -91,7 +91,7 @@
             // 
             // ChooseATemplateOrderButton
             // 
-            this.ChooseATemplateOrderButton.Location = new System.Drawing.Point(13, 686);
+            this.ChooseATemplateOrderButton.Location = new System.Drawing.Point(12, 632);
             this.ChooseATemplateOrderButton.Name = "ChooseATemplateOrderButton";
             this.ChooseATemplateOrderButton.Size = new System.Drawing.Size(163, 48);
             this.ChooseATemplateOrderButton.TabIndex = 5;
@@ -101,7 +101,7 @@
             // 
             // SaveButton
             // 
-            this.SaveButton.Location = new System.Drawing.Point(519, 632);
+            this.SaveButton.Location = new System.Drawing.Point(689, 632);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(163, 48);
             this.SaveButton.TabIndex = 6;
