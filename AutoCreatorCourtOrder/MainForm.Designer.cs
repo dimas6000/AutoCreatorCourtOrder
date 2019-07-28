@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             this.RichTextBox = new System.Windows.Forms.RichTextBox();
-            this.openFileButton = new System.Windows.Forms.Button();
+            this.OpenFileButton = new System.Windows.Forms.Button();
             this.ExtractDataButton = new System.Windows.Forms.Button();
             this.ShowDataButton = new System.Windows.Forms.Button();
             this.CreateCourtOrderButton = new System.Windows.Forms.Button();
-            this.chooseATemplateOrederButton = new System.Windows.Forms.Button();
-            this.saveButton = new System.Windows.Forms.Button();
-            this.DirectoryCreateOrderButton = new System.Windows.Forms.Button();
+            this.ChooseATemplateOrderButton = new System.Windows.Forms.Button();
+            this.SaveButton = new System.Windows.Forms.Button();
+            this.DirectoryCreateCourtOrderButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // RichTextBox
@@ -49,15 +49,15 @@
             this.RichTextBox.TabIndex = 0;
             this.RichTextBox.Text = "";
             // 
-            // openFileButton
+            // OpenFileButton
             // 
-            this.openFileButton.Location = new System.Drawing.Point(12, 632);
-            this.openFileButton.Name = "openFileButton";
-            this.openFileButton.Size = new System.Drawing.Size(163, 48);
-            this.openFileButton.TabIndex = 1;
-            this.openFileButton.Text = "Открыть файл";
-            this.openFileButton.UseVisualStyleBackColor = true;
-            this.openFileButton.Click += new System.EventHandler(this.OpenFileButton_Click);
+            this.OpenFileButton.Location = new System.Drawing.Point(12, 632);
+            this.OpenFileButton.Name = "OpenFileButton";
+            this.OpenFileButton.Size = new System.Drawing.Size(163, 48);
+            this.OpenFileButton.TabIndex = 1;
+            this.OpenFileButton.Text = "Открыть файл";
+            this.OpenFileButton.UseVisualStyleBackColor = true;
+            this.OpenFileButton.Click += new System.EventHandler(this.OpenFileButton_Click);
             // 
             // ExtractDataButton
             // 
@@ -71,7 +71,7 @@
             // 
             // ShowDataButton
             // 
-            this.ShowDataButton.Location = new System.Drawing.Point(181, 687);
+            this.ShowDataButton.Location = new System.Drawing.Point(182, 686);
             this.ShowDataButton.Name = "ShowDataButton";
             this.ShowDataButton.Size = new System.Drawing.Size(163, 48);
             this.ShowDataButton.TabIndex = 3;
@@ -89,36 +89,36 @@
             this.CreateCourtOrderButton.UseVisualStyleBackColor = true;
             this.CreateCourtOrderButton.Click += new System.EventHandler(this.CreateCourtOrderButton_Click);
             // 
-            // chooseATemplateOrederButton
+            // ChooseATemplateOrderButton
             // 
-            this.chooseATemplateOrederButton.Location = new System.Drawing.Point(350, 687);
-            this.chooseATemplateOrederButton.Name = "chooseATemplateOrederButton";
-            this.chooseATemplateOrederButton.Size = new System.Drawing.Size(163, 48);
-            this.chooseATemplateOrederButton.TabIndex = 5;
-            this.chooseATemplateOrederButton.Text = "Выбрать шаблон приказа";
-            this.chooseATemplateOrederButton.UseVisualStyleBackColor = true;
-            this.chooseATemplateOrederButton.Click += new System.EventHandler(this.ChooseATemplateOrderButton_Click);
+            this.ChooseATemplateOrderButton.Location = new System.Drawing.Point(13, 686);
+            this.ChooseATemplateOrderButton.Name = "ChooseATemplateOrderButton";
+            this.ChooseATemplateOrderButton.Size = new System.Drawing.Size(163, 48);
+            this.ChooseATemplateOrderButton.TabIndex = 5;
+            this.ChooseATemplateOrderButton.Text = "Выбрать шаблон приказа";
+            this.ChooseATemplateOrderButton.UseVisualStyleBackColor = true;
+            this.ChooseATemplateOrderButton.Click += new System.EventHandler(this.ChooseATemplateOrderButton_Click);
             // 
-            // saveButton
+            // SaveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(519, 632);
-            this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(163, 48);
-            this.saveButton.TabIndex = 6;
-            this.saveButton.Text = "Сохранить судебный приказ";
-            this.saveButton.UseVisualStyleBackColor = true;
-            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+            this.SaveButton.Location = new System.Drawing.Point(519, 632);
+            this.SaveButton.Name = "SaveButton";
+            this.SaveButton.Size = new System.Drawing.Size(163, 48);
+            this.SaveButton.TabIndex = 6;
+            this.SaveButton.Text = "Сохранить судебный приказ";
+            this.SaveButton.UseVisualStyleBackColor = true;
+            this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
             // 
-            // DirectoryCreateOrderButton
+            // DirectoryCreateCourtOrderButton
             // 
-            this.DirectoryCreateOrderButton.Location = new System.Drawing.Point(880, 633);
-            this.DirectoryCreateOrderButton.Name = "DirectoryCreateOrderButton";
-            this.DirectoryCreateOrderButton.Size = new System.Drawing.Size(332, 102);
-            this.DirectoryCreateOrderButton.TabIndex = 7;
-            this.DirectoryCreateOrderButton.Text = "Выбрать папку с заявлениями для создания судебных приказов и создать приказы для " +
+            this.DirectoryCreateCourtOrderButton.Location = new System.Drawing.Point(880, 632);
+            this.DirectoryCreateCourtOrderButton.Name = "DirectoryCreateCourtOrderButton";
+            this.DirectoryCreateCourtOrderButton.Size = new System.Drawing.Size(332, 102);
+            this.DirectoryCreateCourtOrderButton.TabIndex = 7;
+            this.DirectoryCreateCourtOrderButton.Text = "Выбрать папку с заявлениями для создания судебных приказов и создать приказы для " +
     "всех файлов из папки";
-            this.DirectoryCreateOrderButton.UseVisualStyleBackColor = true;
-            this.DirectoryCreateOrderButton.Click += new System.EventHandler(this.DirectoryCreateOrderButton_Click);
+            this.DirectoryCreateCourtOrderButton.UseVisualStyleBackColor = true;
+            this.DirectoryCreateCourtOrderButton.Click += new System.EventHandler(this.DirectoryCreateOrderButton_Click);
             // 
             // MainForm
             // 
@@ -126,13 +126,13 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1224, 747);
-            this.Controls.Add(this.DirectoryCreateOrderButton);
-            this.Controls.Add(this.saveButton);
-            this.Controls.Add(this.chooseATemplateOrederButton);
+            this.Controls.Add(this.DirectoryCreateCourtOrderButton);
+            this.Controls.Add(this.SaveButton);
+            this.Controls.Add(this.ChooseATemplateOrderButton);
             this.Controls.Add(this.CreateCourtOrderButton);
             this.Controls.Add(this.ShowDataButton);
             this.Controls.Add(this.ExtractDataButton);
-            this.Controls.Add(this.openFileButton);
+            this.Controls.Add(this.OpenFileButton);
             this.Controls.Add(this.RichTextBox);
             this.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Name = "MainForm";
@@ -145,13 +145,13 @@
         #endregion
 
         private System.Windows.Forms.RichTextBox RichTextBox;
-        private System.Windows.Forms.Button openFileButton;
+        private System.Windows.Forms.Button OpenFileButton;
         private System.Windows.Forms.Button ExtractDataButton;
         private System.Windows.Forms.Button ShowDataButton;
         private System.Windows.Forms.Button CreateCourtOrderButton;
-        private System.Windows.Forms.Button chooseATemplateOrederButton;
-        private System.Windows.Forms.Button saveButton;
-        private System.Windows.Forms.Button DirectoryCreateOrderButton;
+        private System.Windows.Forms.Button ChooseATemplateOrderButton;
+        private System.Windows.Forms.Button SaveButton;
+        private System.Windows.Forms.Button DirectoryCreateCourtOrderButton;
     }
 }
 
