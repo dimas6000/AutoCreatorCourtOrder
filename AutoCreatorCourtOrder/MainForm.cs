@@ -20,7 +20,7 @@ namespace AutoCreatorCourtOrder
             DirectoryCreateCourtOrderButton.Enabled = false;
         }
         // Кнопки активируются через свойства, после того как сделал так,
-        // мне это кажется странной реализацией.    
+        // мне это кажется крайне странной реализацией.    
         /// <summary>
         /// Файл шаблона выбран.
         /// </summary>
@@ -40,11 +40,7 @@ namespace AutoCreatorCourtOrder
         public bool FileIsOpen
         {
             get { return FileIsOpen; }
-            set
-            {
-               // OpenFileButton.Enabled = !value;
-                ExtractDataButton.Enabled = value;
-            }
+            set { ExtractDataButton.Enabled = value; }
         }
         /// <summary>
         /// Данные извлечены.
@@ -85,6 +81,33 @@ namespace AutoCreatorCourtOrder
                 OpenFileButton.Enabled = value;
             }
         }
+        /// <summary>
+        /// Массовая обработка файлов завершена.
+        /// </summary>
+        public bool CreatedOrdersInDirectory
+        {
+            get { return CourtOrderSaved; }
+            set
+            {
+                ChooseATemplateOrderButton.Enabled = value;
+                OpenFileButton.Enabled = !value;
+                ExtractDataButton.Enabled = !value;
+                ShowDataButton.Enabled = !value;
+                CreateCourtOrderButton.Enabled = !value;
+                SaveButton.Enabled = !value;
+                DirectoryCreateCourtOrderButton.Enabled = !value;
+            }
+        }
+
+        /// <summary>
+        /// Загружает текст из файла в RichTextBox.
+        /// </summary>
+        /// <param name="pathToFile">Путь к файлу.</param>
+        private void OpenFile(string pathToFile)
+        {
+            WorkWithFiles.FileBeingProcessed = new FileInfo(pathToFile);
+            RichTextBox.LoadFile(WorkWithFiles.FileBeingProcessed.FullName, RichTextBoxStreamType.RichText);
+        }
 
         /// <summary>
         /// Извлекает все необходимые данные из файла и сохраняет в класс ExtractedData.
@@ -111,13 +134,13 @@ namespace AutoCreatorCourtOrder
         }
 
         /// <summary>
-        /// Создает судебный приказ по шаблону
+        /// Создает судебный приказ по шаблону.
         /// </summary>
         private void CreateCourtOrder()
         {
             try
             {
-                RichTextBox.LoadFile(PathsData.PathToTemplate, RichTextBoxStreamType.RichText);
+                RichTextBox.LoadFile(WorkWithFiles.CourtOrderTemplate.FullName, RichTextBoxStreamType.RichText);
             }
             catch (IOException)
             {
@@ -141,10 +164,6 @@ namespace AutoCreatorCourtOrder
             RichTextBox.Rtf = RichTextBox.Rtf.Replace("#GOSPOSHLINA#", ExtractedData.CalculateStateDuty().ToString());
             RichTextBox.Rtf = RichTextBox.Rtf.Replace("#BANKDETAILS#", ExtractedData.BankDetails);
 
-            // Вроде лучше иначе активировать\деактивировать элементы формы (с т.з. оформления кода). Узнать как. 
-            // saveButton.Enabled = true;
-            // CreateCourtOrderButton.Enabled = false;
-            // ShowDataButton.Enabled = false;
             /// <summary>
             /// #FULLNAME# - заменяется на ФИО 
             /// #GENITIVE# - заменяется на ФИО в родительном
@@ -158,29 +177,21 @@ namespace AutoCreatorCourtOrder
             ///<summary>
         }
 
-        // Изменить внутри
         /// <summary>
-        /// Сохраняет судебный приказ
+        /// Сохраняет судебный приказ.
         /// </summary>
         private void SaveCourtOrder()
         {
-            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            // Передалать работу с файлами через класс File
-            string directory = Path.Combine(Path.GetDirectoryName(PathsData.PathToTemplate), "Приказы созданные программой");
-            if (!Directory.Exists(directory)) //создаем директорию если её не существует
-            {
+            string directory = Path.Combine(WorkWithFiles.FileBeingProcessed.DirectoryName, "Приказы созданные программой");
+            if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
-            }
-            // Переделать пути через интерполированные строки
-            RichTextBox.SaveFile(Path.Combine(directory, "Приказ ") + $"{ExtractedData.FullName}.rtf", RichTextBoxStreamType.RichText);
-            File.Move(PathsData.PathToFileBeingProcessed, Path.Combine(Path.GetDirectoryName(PathsData.PathToFileBeingProcessed),
-                "!" + Path.GetFileName(PathsData.PathToFileBeingProcessed)));
-
-            // saveButton.Enabled = false;
+            RichTextBox.SaveFile(Path.Combine(directory, $"Приказ {ExtractedData.FullName}.rtf"), RichTextBoxStreamType.RichText);
+        
+            WorkWithFiles.MoveProcessedFile(WorkWithFiles.FileBeingProcessed);
         }
 
         /// <summary>
-        /// Загружает текст из файла в richTextBox
+        /// Загружает текст из файла в RichTextBox.
         /// </summary>
         private void OpenFileButton_Click(object sender, EventArgs e)
         {
@@ -196,8 +207,7 @@ namespace AutoCreatorCourtOrder
                     dialog.Filter = "rtf files (*.rtf)|*.rtf";
                     if (dialog.ShowDialog() == DialogResult.OK)
                     {
-                        PathsData.PathToFileBeingProcessed = dialog.FileName;
-                        RichTextBox.LoadFile(PathsData.PathToFileBeingProcessed, RichTextBoxStreamType.RichText);
+                        OpenFile(dialog.FileName);
                         FileIsOpen = true;
                     }
                 }
@@ -257,7 +267,7 @@ namespace AutoCreatorCourtOrder
                     dialog.Filter = "rtf files (*.rtf)|*.rtf";
                     if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
-                        PathsData.PathToTemplate = dialog.FileName; // Сохраняем путь к шаблону приказа.
+                        WorkWithFiles.CourtOrderTemplate = new FileInfo(dialog.FileName);
                         TemplateFileSelected = true;
                     }
                 }
@@ -283,7 +293,7 @@ namespace AutoCreatorCourtOrder
         }
 
         /// <summary>
-        /// Автоматическое создание судебных приказов для всех файлов в папке. Сырое!
+        /// Автоматическое создание судебных приказов для всех файлов в папке.
         /// </summary>
         private void DirectoryCreateOrderButton_Click(object sender, EventArgs e)
         {
@@ -292,27 +302,17 @@ namespace AutoCreatorCourtOrder
                 dialog.Description = "Выбор директории";
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    // saveButton.Enabled = false;
-                    // CreateCourtOrderButton.Enabled = false;
-                    // ExtractDataButton.Enabled = false;
-                    // openFileButton.Enabled = false;
-                    // ShowDataButton.Enabled = false;
-                    // chooseATemplateOrederButton.Enabled = false;
-
                     var files = Directory.GetFiles(dialog.SelectedPath);
                     var rtfFiles = files.Where(f => Path.GetExtension(f).ToLower() == ".rtf");
-
                     foreach (var file in rtfFiles)
                     {
-                        // Костыль для переименования файла, надо переработать само переименование в принципе.
-                        PathsData.PathToFileBeingProcessed = file;
-
-                        RichTextBox.LoadFile(PathsData.PathToFileBeingProcessed, RichTextBoxStreamType.RichText);
+                        OpenFile(file);
                         ExtractData();
                         CreateCourtOrder();
                         SaveCourtOrder();
                     }
                     MessageBox.Show("Обработано документов: " + rtfFiles.Count().ToString());
+                    CreatedOrdersInDirectory = true;
                 }
             }
         }
