@@ -10,7 +10,7 @@ namespace AutoCreatorCourtOrder
     static class ExtractedData
     {
         /// <summary>
-        /// Получает строку, делает каждое слово с заглавной буквы.
+        /// Получает строку, возвращает каждое слово с заглавной буквы.
         /// </summary>
         private static string _firstUpper(string str)
         {
