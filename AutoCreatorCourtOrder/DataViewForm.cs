@@ -19,6 +19,7 @@ namespace AutoCreatorCourtOrder
         public DataViewForm()
         {
             InitializeComponent();
+            /*
             fullNameTextBox.Text = ExtractedData.FullName;
             addressTextBox.Text = ExtractedData.Address;
             bplTextBox.Text = ExtractedData.BirthPlace;
@@ -28,6 +29,7 @@ namespace AutoCreatorCourtOrder
             debtStructureRichTextBox.Text = ExtractedData.DebtStructure;
             bankDetailsRichTextBox.Text = ExtractedData.BankDetails;
             stateDutyNumericUpDown.Value = ExtractedData.CalculateStateDuty();
+            */
         }
     }
 }

@@ -7,12 +7,12 @@ using Cyriller;
 
 namespace AutoCreatorCourtOrder
 {
-    static class ExtractedData
+    class ExtractedData
     {
         /// <summary>
         /// Получает строку, возвращает каждое слово с заглавной буквы.
         /// </summary>
-        private static string _firstUpper(string str)
+        private string _firstUpper(string str)
         {
             // Код функции без изменений с cyberforum.com
             str = str.ToLower();
@@ -32,7 +32,7 @@ namespace AutoCreatorCourtOrder
         /// Производит расчет госпошлины. 
         /// </summary>
         /// <returns>Размер госпошлины.</returns>
-        public static decimal CalculateStateDuty()
+        public decimal CalculateStateDuty()
         {
             // Магические числа берутся из формулы расчета госпошлины в мировой суд для 
             // заявления о вынесении судебного приказа (50% от стандартной госпошлины).
@@ -47,11 +47,11 @@ namespace AutoCreatorCourtOrder
             return (2600 + ((AllDebt - 200000) * 0.005m));
         }
 
-        private static string _fullName;
+        private string _fullName;
         /// <summary>
         /// ФИО.
         /// </summary>
-        public static string FullName
+        public string FullName
         {
             get { return _fullName; }
             set
@@ -69,42 +69,42 @@ namespace AutoCreatorCourtOrder
         /// <summary>
         /// ФИО в родительном падеже.
         /// </summary>
-        public static string FullNameGenitive { get; private set; }
+        public string FullNameGenitive { get; private set; }
 
         /// <summary>
         /// Адрес.
         /// </summary>
-        public static string Address { get; set; }
+        public string Address { get; set; }
 
         /// <summary>
         /// Дата рождения.
         /// </summary>
-        public static string DateOfBirth { get; set; }
+        public string DateOfBirth { get; set; }
 
         /// <summary>
         /// Место рождения.
         /// </summary>
-        public static string BirthPlace { get; set; }
+        public string BirthPlace { get; set; }
 
         /// <summary>
         /// ИНН.
         /// </summary>
-        public static string Inn { get; set; }
+        public string Inn { get; set; }
 
         /// <summary>
         /// Общая структура задолженности, целиком текст из начального файла.
         /// </summary>
-        public static string DebtStructure { get; set; }
+        public string DebtStructure { get; set; }
 
         /// <summary>
         /// Общая сумма долга, для расчета госпошлины.
         /// </summary>
-        public static int AllDebt { get; set; }
+        public int AllDebt { get; set; }
 
         /// <summary>
         /// Реквизиты, целиком хранится кусок текста, вроде в них меняется 
         /// только КБК, но это не точно, поэтому сохраняем целиком.
         /// </summary>
-        public static string BankDetails { get; set; }
+        public string BankDetails { get; set; }
     }
 }
