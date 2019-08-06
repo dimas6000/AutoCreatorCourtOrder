@@ -7,7 +7,7 @@ using Cyriller;
 
 namespace AutoCreatorCourtOrder
 {
-    class ExtractedData
+    public class ExtractedData
     {
         /// <summary>
         /// Получает строку, возвращает каждое слово с заглавной буквы.
