@@ -22,7 +22,7 @@ namespace AutoCreatorCourtOrder
         /// Находит адрес. Подстрока от первого алфавитно-цифрового 
         /// символа после ФИО и до пробела перед словом "Дата".
         /// </summary>
-        public static string Address { get { return @"(?<=" + ExtractedData.FullName + @"\s*)\w.+?(?=\s*Дата)"; } }
+        public static string Address { get { return @"(?<=Должник(\s|\S)*)\d{6}(\s|\S)*(?=\s*Дата)"; } }
 
         /// <summary>
         /// Находит дату рождения. Три числа после слов "Дата рождения" разделенные любым одиночным символом.
