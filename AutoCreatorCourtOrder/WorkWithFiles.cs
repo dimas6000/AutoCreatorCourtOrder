@@ -1,10 +1,12 @@
 ﻿using System.IO;
+using System.Windows.Forms;
+
 namespace AutoCreatorCourtOrder
 {
     /// <summary>
-    /// Хранит пути к файлам и папкам.
+    /// Класс для работы с файлами.
     /// </summary>
-    static class WorkWithFiles
+    class WorkWithFiles
     {
         /// <summary>
         /// Перемещает обработанный файл в папку file.DirectoryName/Обработанные файлы.
@@ -15,17 +17,15 @@ namespace AutoCreatorCourtOrder
             string directory = Path.Combine(file.DirectoryName, "Обработанные файлы");
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
-            FileBeingProcessed.MoveTo(Path.Combine(directory, FileBeingProcessed.Name));
+            file.MoveTo(Path.Combine(directory, file.Name));
         }
-
         /// <summary>
-        /// Файл шаблона приказа.
+        /// Путь к обрабатываемому файлу.
         /// </summary>
-        public static FileInfo CourtOrderTemplate { get; set; }
-
+        public FileInfo FileBeingProcessed { get; set; }
         /// <summary>
-        /// Обрабатываемый файл.
+        /// Файл шаблона приказа в формате RTF (данные из RichTextBox.Rtf).
         /// </summary>
-        public static FileInfo FileBeingProcessed { get; set; }
+        public static string CourtOrderTemplate { get; set; }
     }
 }
