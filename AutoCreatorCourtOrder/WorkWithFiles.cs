@@ -4,7 +4,8 @@ using System.Windows.Forms;
 namespace AutoCreatorCourtOrder
 {
     /// <summary>
-    /// Класс для работы с файлами.
+    /// Класс для работы с файлами. Несколько костыльный.
+    /// Хранит путь к обрабатываемому файлу и текст файла-шаблона. 
     /// </summary>
     class WorkWithFiles
     {
@@ -24,7 +25,7 @@ namespace AutoCreatorCourtOrder
         /// </summary>
         public FileInfo FileBeingProcessed { get; set; }
         /// <summary>
-        /// Файл шаблона приказа в формате RTF (данные из RichTextBox.Rtf).
+        /// Файл шаблона приказа в формате RTF (данные из richTextBox.Rtf).
         /// </summary>
         public static string CourtOrderTemplate { get; set; }
     }
