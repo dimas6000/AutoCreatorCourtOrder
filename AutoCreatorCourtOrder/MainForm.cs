@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AutoCreatorCourtOrder
@@ -322,8 +323,8 @@ namespace AutoCreatorCourtOrder
             string template = WorkWithFiles.CourtOrderTemplate;
             box.Rtf = CreateCourtOrder(template, extData);
             SaveCourtOrder(box, extData.FullName, new FileInfo(file));
+            ProgressBarMultiThreading.Invoke((Action)(() => { ProgressBarMultiThreading.PerformStep(); }));
         }
-
         /// <summary>
         /// Автоматическое создание судебных приказов для всех файлов в папке.
         /// </summary>
@@ -336,11 +337,15 @@ namespace AutoCreatorCourtOrder
                 {
                     var files = Directory.GetFiles(dialog.SelectedPath);
                     var rtfFiles = files.Where(f => Path.GetExtension(f).ToLower() == ".rtf");
-                    
-                    Parallel.ForEach(rtfFiles, СreateOrdersInMultipleThreads);
-                    
-                    MessageBox.Show("Обработано документов: " + rtfFiles.Count().ToString());
+                    ProgressBarMultiThreading.Maximum = rtfFiles.Count();
+                    Thread th = new Thread(new ThreadStart(() =>
+                    {
+                        Parallel.ForEach(rtfFiles, СreateOrdersInMultipleThreads);
+                        MessageBox.Show("Обработано документов: " + rtfFiles.Count().ToString());
+                    }));
+                    th.Start();
                     CreatedOrdersInDirectory = true;
+                    ProgressBarMultiThreading.Value = 1;
                 }
             }
         }

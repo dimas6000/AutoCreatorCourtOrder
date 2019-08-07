@@ -36,6 +36,7 @@
             this.ChooseATemplateOrderButton = new System.Windows.Forms.Button();
             this.SaveButton = new System.Windows.Forms.Button();
             this.DirectoryCreateCourtOrderButton = new System.Windows.Forms.Button();
+            this.ProgressBarMultiThreading = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
             // RichTextBox
@@ -120,12 +121,21 @@
             this.DirectoryCreateCourtOrderButton.UseVisualStyleBackColor = true;
             this.DirectoryCreateCourtOrderButton.Click += new System.EventHandler(this.DirectoryCreateOrderButton_Click);
             // 
+            // ProgressBarMultiThreading
+            // 
+            this.ProgressBarMultiThreading.Location = new System.Drawing.Point(520, 686);
+            this.ProgressBarMultiThreading.Name = "ProgressBarMultiThreading";
+            this.ProgressBarMultiThreading.Size = new System.Drawing.Size(332, 48);
+            this.ProgressBarMultiThreading.Step = 1;
+            this.ProgressBarMultiThreading.TabIndex = 8;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1224, 747);
+            this.Controls.Add(this.ProgressBarMultiThreading);
             this.Controls.Add(this.DirectoryCreateCourtOrderButton);
             this.Controls.Add(this.SaveButton);
             this.Controls.Add(this.ChooseATemplateOrderButton);
@@ -152,6 +162,7 @@
         private System.Windows.Forms.Button ChooseATemplateOrderButton;
         private System.Windows.Forms.Button SaveButton;
         private System.Windows.Forms.Button DirectoryCreateCourtOrderButton;
+        private System.Windows.Forms.ProgressBar ProgressBarMultiThreading;
     }
 }
 
