@@ -127,7 +127,6 @@
             this.progressBarMultiThreading.Name = "progressBarMultiThreading";
             this.progressBarMultiThreading.Size = new System.Drawing.Size(332, 48);
             this.progressBarMultiThreading.Step = 1;
-            this.progressBarMultiThreading.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.progressBarMultiThreading.TabIndex = 8;
             // 
             // MainForm
