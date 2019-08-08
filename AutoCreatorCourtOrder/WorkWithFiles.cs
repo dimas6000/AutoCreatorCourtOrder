@@ -25,7 +25,7 @@ namespace AutoCreatorCourtOrder
         /// </summary>
         public FileInfo FileBeingProcessed { get; set; }
         /// <summary>
-        /// Файл шаблона приказа в формате RTF (данные из richTextBox.Rtf).
+        /// Файл шаблона приказа в формате RTF (данные из RichTextBox.Rtf).
         /// </summary>
         public static string CourtOrderTemplate { get; set; }
     }
