@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cyriller;
+using Cyriller.Model;
 
 namespace AutoCreatorCourtOrder
 {
@@ -27,7 +28,7 @@ namespace AutoCreatorCourtOrder
             }
             return string.Join(" ", s);
         }
-        
+
         /// <summary>
         /// Производит расчет госпошлины. 
         /// </summary>
@@ -56,13 +57,12 @@ namespace AutoCreatorCourtOrder
             get { return _fullName; }
             set
             {
-                _fullName = _firstUpper(value);
+                var cyrName = new CyrName();
+                // Cyriller при попытке склонения в именительный падеж просто вернет ФИО с нормальным форматированием.
+                _fullName = cyrName.Decline(value, CasesEnum.Nominative).FullName;
 
-                //Сразу склоняем ФИО в родительный падеж с помощью Cyriller'a.
-                string[] splFullName = FullName.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                var toGenitive = new CyrName();
-                string[] genitiveFullName = toGenitive.Decline(splFullName[0], splFullName[1], splFullName[2], 2);
-                FullNameGenitive = genitiveFullName[0] + " " + genitiveFullName[1] + " " + genitiveFullName[2];
+                // Сразу склоняем ФИО в родительный падеж с помощью Cyriller'a.
+                FullNameGenitive = cyrName.Decline(value, CasesEnum.Genitive).FullName;
             }
         }
 
