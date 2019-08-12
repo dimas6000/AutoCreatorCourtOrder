@@ -11,25 +11,6 @@ namespace AutoCreatorCourtOrder
     public class ExtractedData
     {
         /// <summary>
-        /// Получает строку, возвращает каждое слово с заглавной буквы.
-        /// </summary>
-        private string _firstUpper(string str)
-        {
-            // Код функции без изменений с cyberforum.com
-            str = str.ToLower();
-            string[] s = str.Split(' ');
-
-            for (int i = 0; i < s.Length; i++)
-            {
-                if (s[i].Length > 1)
-                    s[i] = s[i].Substring(0, 1).ToUpper() + s[i].Substring(1, s[i].Length - 1).ToLower();
-                else
-                    s[i] = s[i].ToUpper();
-            }
-            return string.Join(" ", s);
-        }
-
-        /// <summary>
         /// Производит расчет госпошлины. 
         /// </summary>
         /// <returns>Размер госпошлины.</returns>
@@ -60,7 +41,6 @@ namespace AutoCreatorCourtOrder
                 var cyrName = new CyrName();
                 // Cyriller при попытке склонения в именительный падеж просто вернет ФИО с нормальным форматированием.
                 _fullName = cyrName.Decline(value, CasesEnum.Nominative).FullName;
-
                 // Сразу склоняем ФИО в родительный падеж с помощью Cyriller'a.
                 FullNameGenitive = cyrName.Decline(value, CasesEnum.Genitive).FullName;
             }
@@ -85,7 +65,7 @@ namespace AutoCreatorCourtOrder
         /// Место рождения.
         /// </summary>
         public string BirthPlace { get; set; }
-
+        
         /// <summary>
         /// ИНН.
         /// </summary>
