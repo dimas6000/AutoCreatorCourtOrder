@@ -170,6 +170,8 @@ namespace AutoCreatorCourtOrder
         private void ShowFile(RichTextBox box)
         {
             richTextBox.Rtf = box.Rtf;
+            richTextBox.SelectionStart = 0;
+            richTextBox.ScrollToCaret();
         }
 
         /// <summary>
