@@ -216,14 +216,10 @@ namespace AutoCreatorCourtOrder
         /// <param name="box">Объект с текстом для сохранения в файл.</param>
         /// <param name="fullName">ФИО на которое создан приказ. (ExtractedData.FullName)</param>
         /// <param name="fileBeingProcessed">Файл заявления о вынесении судебного приказа.</param>
-        private void SaveCourtOrder(RichTextBox box, string fullName, FileInfo fileBeingProcessed)
+        private void SaveCourtOrder(FileInfo fileBeingProcessed, string fullName, RichTextBox box)
         {
-            string directory = Path.Combine(fileBeingProcessed.DirectoryName, "Приказы созданные программой");
-            if (!Directory.Exists(directory))
-                Directory.CreateDirectory(directory);
-            box.SaveFile(Path.Combine(directory, $"Приказ {fullName}.rtf"), RichTextBoxStreamType.RichText);
-
-            WorkWithFiles.MoveProcessedFile(fileBeingProcessed);
+            if (WorkWithFiles.FileSavedSuccessfully(fileBeingProcessed, fullName, box))
+                WorkWithFiles.MoveProcessedFile(fileBeingProcessed);
         }
 
         /// <summary>
@@ -295,7 +291,7 @@ namespace AutoCreatorCourtOrder
         /// </summary>
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            SaveCourtOrder(richTextBox, extractedData.FullName, workWithFiles.FileBeingProcessed);
+            SaveCourtOrder(workWithFiles.FileBeingProcessed, extractedData.FullName, richTextBox);
             CourtOrderSaved();
         }
 
@@ -317,7 +313,7 @@ namespace AutoCreatorCourtOrder
             RichTextBox box = new RichTextBox { Rtf = ExtractTextFromRtf(file) };
             ExtractedData extData = ExtractData(box);
             box.Rtf = CreateCourtOrder(WorkWithFiles.CourtOrderTemplate, extData);
-            SaveCourtOrder(box, extData.FullName, new FileInfo(file));
+            SaveCourtOrder(new FileInfo(file), extData.FullName, box);
             progressBarMultiThreading.Invoke((Action)(() => { progressBarMultiThreading.PerformStep(); }));
         }
         /// <summary>
