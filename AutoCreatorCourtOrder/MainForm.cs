@@ -22,6 +22,7 @@ namespace AutoCreatorCourtOrder
             directoryCreateCourtOrderButton.Enabled = false;
         }
 
+        #region Методы для активации\деактивации кнопок.
         /// <summary>
         /// Файл шаблона выбран. Деактивирует кнопку выбора шаблона. 
         /// Активирует кнопки открытия файла и создания приказов для всех файлов из папки.
@@ -88,6 +89,7 @@ namespace AutoCreatorCourtOrder
             progressBarMultiThreading.Invoke((Action)(() => { progressBarMultiThreading.Value = 0; }));
             chooseATemplateOrderButton.Invoke((Action)(() => { chooseATemplateOrderButton.Enabled = true; }));
         }
+        #endregion
 
         // Извлеченные данные для поштучной обработки файлов. 
         ExtractedData extractedData = new ExtractedData();
@@ -111,10 +113,8 @@ namespace AutoCreatorCourtOrder
                     dialog.Filter = "rtf files (*.rtf)|*.rtf";
                     if (dialog.ShowDialog() == DialogResult.OK)
                     {
-                        workWithFiles.FileBeingProcessed = new FileInfo(dialog.FileName);
-                        RichTextBox box = new RichTextBox { Rtf = ExtractTextFromRtf(workWithFiles.FileBeingProcessed.FullName) };
+                        RichTextBox box = new RichTextBox { Rtf = ExtractTextFromRtf(dialog.FileName) };
                         ShowFile(box);
-
                         WorkWithFiles.CourtOrderTemplate = box.Rtf;
                         TemplateFileSelected();
                     }
@@ -127,16 +127,16 @@ namespace AutoCreatorCourtOrder
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Произошла неизвестная ошибка:\n" + ex.ToString());
+                MessageBox.Show($"Произошла неизвестная ошибка:\n{ex}");
                 Application.Exit();
             }
         }
 
         /// <summary>
-        /// Извлекает текст из файла формата ".rtf".
+        /// Извлекает текст из файла.
         /// </summary>
         /// <param name="pathToFile">Путь к файлу.</param>
-        /// <returns></returns>
+        /// <returns>Весь текст из файла.</returns>
         private string ExtractTextFromRtf(string pathToFile)
         {
             return File.ReadAllText(pathToFile);
@@ -196,18 +196,6 @@ namespace AutoCreatorCourtOrder
             rtf = rtf.Replace("#GOSPOSHLINA#", extractedData.CalculateStateDuty().ToString());
             rtf = rtf.Replace("#BANKDETAILS#", extractedData.BankDetails);
             return rtf;
-
-            /// <summary>
-            /// #FULLNAME# - заменяется на ФИО 
-            /// #GENITIVE# - заменяется на ФИО в родительном
-            /// #DATEOFBIRTH# - заменяется на дату рождения
-            /// #PLACEOFBIRTH# - заменяется на место рождения
-            /// #ADDRESS# - заменяется на адрес
-            /// #INDIVIDUALTAXNUMBER# - заменяется на ИНН
-            /// #DEBTSTRUCTURE# - заменяется на текст описывающий задолженность
-            /// #GOSPOSHLINA# - заменяется на сумму госпошлины
-            /// #BANKDETAILS# - заменяется на реквизиты
-            ///<summary>
         }
 
         /// <summary>
@@ -253,7 +241,7 @@ namespace AutoCreatorCourtOrder
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Произошла неизвестная ошибка при считывании файла:\n" + ex.ToString());
+                MessageBox.Show($"Произошла неизвестная ошибка при считывании файла:\n{ex}");
                 Application.Exit();
             }
         }
@@ -335,7 +323,7 @@ namespace AutoCreatorCourtOrder
                     Thread th = new Thread(new ThreadStart(() =>
                     {
                         Parallel.ForEach(rtfFiles, ForСreatesOrdersInMultipleThreads);
-                        MessageBox.Show("Обработано документов: " + rtfFiles.Count().ToString());
+                        MessageBox.Show($"Обработано документов: {rtfFiles.Count()}");
                         OrdersInDirectoryWasCreated();
                     }));
                     th.Start();
