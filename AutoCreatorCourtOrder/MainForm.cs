@@ -95,12 +95,13 @@ namespace AutoCreatorCourtOrder
         ExtractedData extractedData = new ExtractedData();
         // Объект только чтобы хранить путь к текущему обрабатываемому файлу.
         WorkWithFiles workWithFiles = new WorkWithFiles();
-
+        
         /// <summary>
-        /// Позволяет пользователю выбрать файл шаблона приказа.
-        /// Сохраняет текст шаблона и отображает его в richTextBox.
+        /// Открывает OpenFileDialog для выбора файла пользователем. 
+        /// Если файл не выбран или произошла ошибка возвращает String.Empty
         /// </summary>
-        private void ChooseATemplateOrder()
+        /// <returns>Путь к выбранному файлу.</returns>
+        private string OpenFile()
         {
             try
             {
@@ -113,23 +114,41 @@ namespace AutoCreatorCourtOrder
                     dialog.Filter = "rtf files (*.rtf)|*.rtf";
                     if (dialog.ShowDialog() == DialogResult.OK)
                     {
-                        RichTextBox box = new RichTextBox { Rtf = ExtractTextFromRtf(dialog.FileName) };
-                        ShowFile(box);
-                        WorkWithFiles.CourtOrderTemplate = box.Rtf;
-                        TemplateFileSelected();
+                        return dialog.FileName;
                     }
+                    return string.Empty;
                 }
             }
             catch (IOException)
             {
                 MessageBox.Show("Выбранный шаблон не может быть открыт, возможно он используется другой программой, " +
                                 "закройте программу использующую файл шаблона и попробуйте снова.");
+                return string.Empty;
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Произошла неизвестная ошибка:\n{ex}");
                 Application.Exit();
+                return string.Empty;
             }
+        }
+
+        /// <summary>
+        /// Позволяет пользователю выбрать файл шаблона приказа.
+        /// Сохраняет текст шаблона и отображает его в richTextBox.
+        /// </summary>
+        private void ChooseATemplateOrder()
+        {
+            string pathToFile = OpenFile();
+            if (pathToFile != string.Empty)
+            {
+                RichTextBox box = new RichTextBox { Rtf = ExtractTextFromRtf(pathToFile) };
+                ShowFile(box);
+                WorkWithFiles.CourtOrderTemplate = box.Rtf;
+                TemplateFileSelected();
+            }
+            else
+                MessageBox.Show("Для работы программы необходимо выбрать файл шаблона судебного приказа.");
         }
 
         /// <summary>
@@ -139,7 +158,10 @@ namespace AutoCreatorCourtOrder
         /// <returns>Весь текст из файла.</returns>
         private string ExtractTextFromRtf(string pathToFile)
         {
-            return File.ReadAllText(pathToFile);
+            if (pathToFile != string.Empty)
+                return File.ReadAllText(pathToFile);
+            else
+                return string.Empty;
         }
         /// <summary>
         /// Записывает текст из файла в элемент richTextBox на форме и отображает его.
@@ -215,34 +237,14 @@ namespace AutoCreatorCourtOrder
         /// </summary>
         private void OpenFileButton_Click(object sender, EventArgs e)
         {
-            try
+            string pathToFile = OpenFile();
+            if (pathToFile != string.Empty)
             {
-                using (OpenFileDialog dialog = new OpenFileDialog())
-                {
-                    dialog.CheckFileExists = true;
-                    dialog.CheckPathExists = true;
-                    dialog.Multiselect = false;
-                    dialog.Title = "Выберите файл";
-                    dialog.Filter = "rtf files (*.rtf)|*.rtf";
-                    if (dialog.ShowDialog() == DialogResult.OK)
-                    {
-                        workWithFiles.FileBeingProcessed = new FileInfo(dialog.FileName);
-                        RichTextBox box = new RichTextBox();
-                        box.Rtf = ExtractTextFromRtf(workWithFiles.FileBeingProcessed.FullName);
-                        ShowFile(box);
-                        ProcessedFileIsOpen();
-                    }
-                }
-
-            }
-            catch (IOException)
-            {
-                MessageBox.Show("Выбранный файл не может быть открыт, возможно он используется другой программой.");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Произошла неизвестная ошибка при считывании файла:\n{ex}");
-                Application.Exit();
+                workWithFiles.FileBeingProcessed = new FileInfo(pathToFile);
+                RichTextBox box = new RichTextBox
+                { Rtf = ExtractTextFromRtf(workWithFiles.FileBeingProcessed.FullName) };
+                ShowFile(box);
+                ProcessedFileIsOpen();
             }
         }
 
@@ -282,7 +284,7 @@ namespace AutoCreatorCourtOrder
             SaveCourtOrder(workWithFiles.FileBeingProcessed, extractedData.FullName, richTextBox);
             CourtOrderSaved();
         }
-
+        
         /// <summary>
         /// Выбирает шаблон для создания судебного приказа.
         /// </summary>
