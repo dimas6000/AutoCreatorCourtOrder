@@ -10,7 +10,7 @@ namespace AutoCreatorCourtOrder
     class WorkWithFiles
     {
         /// <summary>
-        /// Проверяет существование файла по полученному пути, если файл существует, добавляет цифру в конец имени.
+        /// Проверяет существование файла по полученному пути, если файл существует, добавляет нумерацию в конце имени.
         /// </summary>
         /// <param name="path">Путь к файлу с желаемым именем.</param>
         /// <returns>Уникальный путь к файлу.</returns>
@@ -22,10 +22,9 @@ namespace AutoCreatorCourtOrder
             {
                 i++;
                 newPath = Path.Combine(Path.GetDirectoryName(path),
-                            Path.GetFileNameWithoutExtension(path), $" ({i})", Path.GetExtension(path));
+                            $"{Path.GetFileNameWithoutExtension(path)} ({i}){Path.GetExtension(path)}");
             }
             return newPath;
-
         }
 
         /// <summary>
@@ -50,16 +49,21 @@ namespace AutoCreatorCourtOrder
         public static void MoveProcessedFile(FileInfo file)
         {
             string directory = Path.Combine(file.DirectoryName, "Обработанные файлы");
-            /*  if (!Directory.Exists(directory))
-                  Directory.CreateDirectory(directory);
-  */
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+
             file.MoveTo(CheckFileName(Path.Combine(directory, file.Name)));
         }
 
         /// <summary>
-        /// Путь к обрабатываемому файлу.
+        /// Обрабатываемый файл.
         /// </summary>
         public FileInfo FileBeingProcessed { get; set; }
+        /// <summary>
+        /// Новый файл.
+        /// </summary>
+        public FileInfo NewFile { get; set; }
+
         /// <summary>
         /// Файл шаблона приказа в формате RTF (данные из RichTextBox.Rtf).
         /// </summary>
