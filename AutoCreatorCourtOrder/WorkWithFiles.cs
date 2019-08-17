@@ -14,7 +14,7 @@ namespace AutoCreatorCourtOrder
         /// </summary>
         /// <param name="path">Путь к файлу с желаемым именем.</param>
         /// <returns>Уникальный путь к файлу.</returns>
-        private static string CheckFileName(string path)
+        private static string ChangeNameIfFileExistence(string path)
         {
             string newPath = path;
             int i = 0;
@@ -39,7 +39,7 @@ namespace AutoCreatorCourtOrder
             string directory = Path.Combine(file.DirectoryName, "Приказы созданные программой");
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
-            box.SaveFile(CheckFileName(Path.Combine(directory, $"Приказ {fullName}.rtf")), RichTextBoxStreamType.RichText);
+            box.SaveFile(ChangeNameIfFileExistence(Path.Combine(directory, $"Приказ {fullName}.rtf")), RichTextBoxStreamType.RichText);
             return true;
         }
         /// <summary>
@@ -52,7 +52,7 @@ namespace AutoCreatorCourtOrder
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
 
-            file.MoveTo(CheckFileName(Path.Combine(directory, file.Name)));
+            file.MoveTo(ChangeNameIfFileExistence(Path.Combine(directory, file.Name)));
         }
 
         /// <summary>
