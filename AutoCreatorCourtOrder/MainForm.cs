@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Windows.Forms;
-using System.Text.RegularExpressions;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace AutoCreatorCourtOrder
 {
@@ -230,7 +230,7 @@ namespace AutoCreatorCourtOrder
         /// <param name="fileBeingProcessed">Файл заявления о вынесении судебного приказа.</param>
         private void SaveCourtOrder(FileInfo fileBeingProcessed, string fullName, RichTextBox box)
         {
-            if (WorkWithFiles.FileSavedSuccessfully(fileBeingProcessed, fullName, box))
+            if (WorkWithFiles.FileSavedSuccessfully(fileBeingProcessed.DirectoryName, fullName, box))
                 WorkWithFiles.MoveProcessedFile(fileBeingProcessed);
         }
 

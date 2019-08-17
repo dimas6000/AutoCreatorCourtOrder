@@ -14,7 +14,7 @@ namespace AutoCreatorCourtOrder
         /// </summary>
         /// <param name="path">Путь к файлу с желаемым именем.</param>
         /// <returns>Уникальный путь к файлу.</returns>
-        private static string ChangeNameIfFileExistence(string path)
+        private static string AddPostfixIfFileExists(string path)
         {
             string newPath = path;
             int i = 0;
@@ -28,18 +28,18 @@ namespace AutoCreatorCourtOrder
         }
 
         /// <summary>
-        /// Сохраняет созданный файл в папку file.DirectoryName/Приказы созданные программой
+        /// Сохраняет созданный файл в папку pathToDirectory/Приказы созданные программой
         /// </summary>
-        /// <param name="file">Перемещаемый файл.</param>        
-        /// <param name="fullName">ФИО на которое создан приказ. (ExtractedData.FullName)</param>
+        /// <param name="pathToDirectory">Директория исходного файла</param>        
+        /// <param name="debtorName">ФИО на которое создан приказ. (ExtractedData.FullName)</param>
         /// <param name="box">Объект с текстом для сохранения в файл.</param>
         /// <returns>Результат сохранения файла.</returns>
-        public static bool FileSavedSuccessfully(FileInfo file, string fullName, RichTextBox box)
+        public static bool FileSavedSuccessfully(string pathToDirectory, string debtorName, RichTextBox box)
         {
-            string directory = Path.Combine(file.DirectoryName, "Приказы созданные программой");
+            string directory = Path.Combine(pathToDirectory, "Приказы созданные программой");
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
-            box.SaveFile(ChangeNameIfFileExistence(Path.Combine(directory, $"Приказ {fullName}.rtf")), RichTextBoxStreamType.RichText);
+            box.SaveFile(AddPostfixIfFileExists(Path.Combine(directory, $"Приказ {debtorName}.rtf")), RichTextBoxStreamType.RichText);
             return true;
         }
         /// <summary>
@@ -52,7 +52,7 @@ namespace AutoCreatorCourtOrder
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
 
-            file.MoveTo(ChangeNameIfFileExistence(Path.Combine(directory, file.Name)));
+            file.MoveTo(AddPostfixIfFileExists(Path.Combine(directory, file.Name)));
         }
 
         /// <summary>
