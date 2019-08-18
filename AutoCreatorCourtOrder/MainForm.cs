@@ -225,13 +225,21 @@ namespace AutoCreatorCourtOrder
         /// <summary>
         /// Сохраняет судебный приказ. Переносит заявление о вынесении приказа в подпапку "/Обработанные файлы".
         /// </summary>
-        /// <param name="box">Объект с текстом для сохранения в файл.</param>
-        /// <param name="fullName">ФИО на которое создан приказ. (ExtractedData.FullName)</param>
         /// <param name="fileBeingProcessed">Файл заявления о вынесении судебного приказа.</param>
+        /// <param name="fullName">ФИО на которое создан приказ. (ExtractedData.FullName)</param>
+        /// <param name="box">Объект с текстом для сохранения в файл.</param>
         private void SaveCourtOrder(FileInfo fileBeingProcessed, string fullName, RichTextBox box)
         {
-            if (WorkWithFiles.FileSavedSuccessfully(fileBeingProcessed.DirectoryName, fullName, box))
+            try
+            {
+                box.SaveFileWithUniqueName(fullName);
                 WorkWithFiles.MoveProcessedFile(fileBeingProcessed);
+            }
+            // todo:
+            catch (Exception ex)
+            {
+                // todo: Имя файлов в неукю строку которые с косяком
+            }
         }
 
         /// <summary>
