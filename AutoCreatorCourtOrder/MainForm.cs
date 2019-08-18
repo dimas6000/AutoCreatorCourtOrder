@@ -33,7 +33,7 @@ namespace AutoCreatorCourtOrder
         /// </summary>
         private void ChooseATemplateOrder()
         {
-            string pathToFile = OpenFile();
+            string pathToFile = WorkWithFiles.OpenFile();
             if (pathToFile != string.Empty)
             {
                 RichTextBox box = new RichTextBox { Rtf = ExtractTextFromRtf(pathToFile) };
@@ -144,14 +144,14 @@ namespace AutoCreatorCourtOrder
         /// </summary>
         private void OpenFileButton_Click(object sender, EventArgs e)
         {
-            string pathToFile = OpenFile();
+            string pathToFile = WorkWithFiles.OpenFile();
             if (pathToFile != string.Empty)
             {
                 workWithFiles.FileBeingProcessed = new FileInfo(pathToFile);
                 RichTextBox box = new RichTextBox
                 { Rtf = ExtractTextFromRtf(workWithFiles.FileBeingProcessed.FullName) };
                 ShowFile(box);
-                ProcessedFileIsOpen();
+                FileBeingProcessedIsOpen();
             }
         }
 
@@ -191,7 +191,7 @@ namespace AutoCreatorCourtOrder
             SaveCourtOrder(workWithFiles.FileBeingProcessed, extractedData.FullName, richTextBox);
             CourtOrderSaved();
         }
-        
+
         /// <summary>
         /// Выбирает шаблон для создания судебного приказа.
         /// </summary>
@@ -236,7 +236,6 @@ namespace AutoCreatorCourtOrder
                         OrdersInDirectoryWasCreated();
                     }));
                     th.Start();
-
                 }
             }
         }
