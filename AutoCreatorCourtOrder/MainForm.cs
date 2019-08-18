@@ -95,43 +95,6 @@ namespace AutoCreatorCourtOrder
         ExtractedData extractedData = new ExtractedData();
         // Объект только чтобы хранить путь к текущему обрабатываемому файлу.
         WorkWithFiles workWithFiles = new WorkWithFiles();
-        
-        /// <summary>
-        /// Открывает OpenFileDialog для выбора файла пользователем. 
-        /// Если файл не выбран или произошла ошибка возвращает String.Empty
-        /// </summary>
-        /// <returns>Путь к выбранному файлу.</returns>
-        private string OpenFile()
-        {
-            try
-            {
-                using (OpenFileDialog dialog = new OpenFileDialog())
-                {
-                    dialog.CheckFileExists = true;
-                    dialog.CheckPathExists = true;
-                    dialog.Multiselect = false;
-                    dialog.Title = "Выберите файл шаблона.";
-                    dialog.Filter = "rtf files (*.rtf)|*.rtf";
-                    if (dialog.ShowDialog() == DialogResult.OK)
-                    {
-                        return dialog.FileName;
-                    }
-                    return string.Empty;
-                }
-            }
-            catch (IOException)
-            {
-                MessageBox.Show("Выбранный шаблон не может быть открыт, возможно он используется другой программой, " +
-                                "закройте программу использующую файл шаблона и попробуйте снова.");
-                return string.Empty;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Произошла неизвестная ошибка:\n{ex}");
-                Application.Exit();
-                return string.Empty;
-            }
-        }
 
         /// <summary>
         /// Позволяет пользователю выбрать файл шаблона приказа.

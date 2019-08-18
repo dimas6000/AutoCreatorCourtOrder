@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace AutoCreatorCourtOrder
@@ -7,63 +8,57 @@ namespace AutoCreatorCourtOrder
     /// Класс для работы с файлами. Несколько костыльный.
     /// Хранит путь к обрабатываемому файлу и текст файла-шаблона. 
     /// </summary>
-    class WorkWithFiles
+    public class WorkWithFiles
     {
-        /// <summary>
-        /// Проверяет существование файла по полученному пути, если файл существует, добавляет нумерацию в конце имени.
-        /// </summary>
-        /// <param name="path">Путь к файлу с желаемым именем.</param>
-        /// <returns>Уникальный путь к файлу.</returns>
-        private static string AddPostfixIfFileExists(string path)
-        {
-            string newPath = path;
-            int i = 0;
-            while (File.Exists(newPath))
-            {
-                i++;
-                newPath = Path.Combine(Path.GetDirectoryName(path),
-                            $"{Path.GetFileNameWithoutExtension(path)} ({i}){Path.GetExtension(path)}");
-            }
-            return newPath;
-        }
-
-        /// <summary>
-        /// Сохраняет созданный файл в папку pathToDirectory/Приказы созданные программой
-        /// </summary>
-        /// <param name="pathToDirectory">Директория исходного файла</param>        
-        /// <param name="debtorName">ФИО на которое создан приказ. (ExtractedData.FullName)</param>
-        /// <param name="box">Объект с текстом для сохранения в файл.</param>
-        /// <returns>Результат сохранения файла.</returns>
-        public static bool FileSavedSuccessfully(string pathToDirectory, string debtorName, RichTextBox box)
-        {
-            string directory = Path.Combine(pathToDirectory, "Приказы созданные программой");
-            if (!Directory.Exists(directory))
-                Directory.CreateDirectory(directory);
-            box.SaveFile(AddPostfixIfFileExists(Path.Combine(directory, $"Приказ {debtorName}.rtf")), RichTextBoxStreamType.RichText);
-            return true;
-        }
         /// <summary>
         /// Перемещает обработанный файл в папку file.DirectoryName/Обработанные файлы
         /// </summary>
         /// <param name="file">Перемещаемый файл.</param>
         public static void MoveProcessedFile(FileInfo file)
         {
-            string directory = Path.Combine(file.DirectoryName, "Обработанные файлы");
-            if (!Directory.Exists(directory))
-                Directory.CreateDirectory(directory);
-
-            file.MoveTo(AddPostfixIfFileExists(Path.Combine(directory, file.Name)));
+            file.MoveTo(Path.Combine(DirectoryHelper.PathToProcessedFilesDirectory, file.Name));
+        }
+        /// <summary>
+        /// Открывает OpenFileDialog для выбора файла пользователем. 
+        /// Если файл не выбран или произошла ошибка возвращает String.Empty
+        /// </summary>
+        /// <returns>Путь к выбранному файлу.</returns>
+        public static string OpenFile()
+        {
+            try
+            {
+                using (OpenFileDialog dialog = new OpenFileDialog())
+                {
+                    dialog.CheckFileExists = true;
+                    dialog.CheckPathExists = true;
+                    dialog.Multiselect = false;
+                    dialog.Title = "Выберите файл шаблона.";
+                    dialog.Filter = "rtf files (*.rtf)|*.rtf";
+                    if (dialog.ShowDialog() == DialogResult.OK)
+                    {
+                        return dialog.FileName;
+                    }
+                    return string.Empty;
+                }
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("Выбранный файл не может быть открыт, возможно он используется другой программой, " +
+                                "закройте программу использующую файл шаблона и попробуйте снова.");
+                return string.Empty;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Произошла неизвестная ошибка:\n{ex}");
+                Application.Exit();
+                return string.Empty;
+            }
         }
 
         /// <summary>
         /// Обрабатываемый файл.
         /// </summary>
         public FileInfo FileBeingProcessed { get; set; }
-        /// <summary>
-        /// Новый файл.
-        /// </summary>
-        public FileInfo NewFile { get; set; }
-
         /// <summary>
         /// Файл шаблона приказа в формате RTF (данные из RichTextBox.Rtf).
         /// </summary>
