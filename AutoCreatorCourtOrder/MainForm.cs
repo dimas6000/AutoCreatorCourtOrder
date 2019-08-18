@@ -145,6 +145,9 @@ namespace AutoCreatorCourtOrder
                 RichTextBox box = new RichTextBox { Rtf = ExtractTextFromRtf(pathToFile) };
                 ShowFile(box);
                 WorkWithFiles.CourtOrderTemplate = box.Rtf;
+
+                DirectoryHelper.CreateDirectories(new FileInfo(pathToFile));
+
                 TemplateFileSelected();
             }
             else
