@@ -22,75 +22,6 @@ namespace AutoCreatorCourtOrder
             directoryCreateCourtOrderButton.Enabled = false;
         }
 
-        #region Методы для активации\деактивации кнопок.
-        /// <summary>
-        /// Файл шаблона выбран. Деактивирует кнопку выбора шаблона. 
-        /// Активирует кнопки открытия файла и создания приказов для всех файлов из папки.
-        /// </summary>
-        private void TemplateFileSelected()
-        {
-            chooseATemplateOrderButton.Enabled = false;
-            openFileButton.Enabled = true;
-            directoryCreateCourtOrderButton.Enabled = true;
-        }
-        /// <summary>
-        /// Обрабатываемый файл выбран и открыт. Активирует кнопку извлечения данных.
-        /// </summary>
-        private void ProcessedFileIsOpen()
-        { extractDataButton.Enabled = true; }
-        /// <summary>
-        /// Данные извлечены. Деактивирует кнопку извлечения данных.
-        /// Активиурет кнопки просмотра данных и создания судебного приказа.
-        /// </summary>
-        private void DataExtracted()
-        {
-            extractDataButton.Enabled = false;
-            showDataButton.Enabled = true;
-            createCourtOrderButton.Enabled = true;
-        }
-        /// <summary>
-        /// Судебный приказ создан. Деактивирует кнопки открытия заявления, создания приказа 
-        /// и просмотра данных. Активирует кнопку сохранения приказа.
-        /// </summary>
-        private void CourtOrderCreated()
-        {
-            showDataButton.Enabled = false;
-            createCourtOrderButton.Enabled = false;
-            openFileButton.Enabled = false;
-            saveButton.Enabled = true;
-        }
-        /// <summary>
-        /// Судебный приказ создан. Деактивирует кнопку сохранения приказа. 
-        /// Активирует кнопку открытия заявления.
-        /// </summary>
-        private void CourtOrderSaved()
-        {
-            saveButton.Enabled = false;
-            openFileButton.Enabled = true;
-        }
-        /// <summary>
-        /// Блокирует все кнопки.
-        /// </summary>
-        private void LockAllButtons()
-        {
-            chooseATemplateOrderButton.Enabled = false;
-            openFileButton.Enabled = false;
-            extractDataButton.Enabled = false;
-            showDataButton.Enabled = false;
-            createCourtOrderButton.Enabled = false;
-            saveButton.Enabled = false;
-            directoryCreateCourtOrderButton.Enabled = false;
-        }
-        /// <summary>
-        /// Массовая обработка файлов в папке завершена. Позволяет выбор нового шаблона и обнуляет прогресс-бар.
-        /// </summary>
-        private void OrdersInDirectoryWasCreated()
-        {
-            progressBarMultiThreading.Invoke((Action)(() => { progressBarMultiThreading.Value = 0; }));
-            chooseATemplateOrderButton.Invoke((Action)(() => { chooseATemplateOrderButton.Enabled = true; }));
-        }
-        #endregion
-
         // Извлеченные данные для поштучной обработки файлов. 
         ExtractedData extractedData = new ExtractedData();
         // Объект только чтобы хранить путь к текущему обрабатываемому файлу.
@@ -309,5 +240,74 @@ namespace AutoCreatorCourtOrder
                 }
             }
         }
+
+        #region Методы для активации\деактивации кнопок.
+        /// <summary>
+        /// Файл шаблона выбран. Деактивирует кнопку выбора шаблона. 
+        /// Активирует кнопки открытия файла и создания приказов для всех файлов из папки.
+        /// </summary>
+        private void TemplateFileSelected()
+        {
+            chooseATemplateOrderButton.Enabled = false;
+            openFileButton.Enabled = true;
+            directoryCreateCourtOrderButton.Enabled = true;
+        }
+        /// <summary>
+        /// Обрабатываемый файл выбран и открыт. Активирует кнопку извлечения данных.
+        /// </summary>
+        private void FileBeingProcessedIsOpen()
+        { extractDataButton.Enabled = true; }
+        /// <summary>
+        /// Данные извлечены. Деактивирует кнопку извлечения данных.
+        /// Активиурет кнопки просмотра данных и создания судебного приказа.
+        /// </summary>
+        private void DataExtracted()
+        {
+            extractDataButton.Enabled = false;
+            showDataButton.Enabled = true;
+            createCourtOrderButton.Enabled = true;
+        }
+        /// <summary>
+        /// Судебный приказ создан. Деактивирует кнопки открытия заявления, создания приказа 
+        /// и просмотра данных. Активирует кнопку сохранения приказа.
+        /// </summary>
+        private void CourtOrderCreated()
+        {
+            showDataButton.Enabled = false;
+            createCourtOrderButton.Enabled = false;
+            openFileButton.Enabled = false;
+            saveButton.Enabled = true;
+        }
+        /// <summary>
+        /// Судебный приказ создан. Деактивирует кнопку сохранения приказа. 
+        /// Активирует кнопку открытия заявления.
+        /// </summary>
+        private void CourtOrderSaved()
+        {
+            saveButton.Enabled = false;
+            openFileButton.Enabled = true;
+        }
+        /// <summary>
+        /// Блокирует все кнопки.
+        /// </summary>
+        private void LockAllButtons()
+        {
+            chooseATemplateOrderButton.Enabled = false;
+            openFileButton.Enabled = false;
+            extractDataButton.Enabled = false;
+            showDataButton.Enabled = false;
+            createCourtOrderButton.Enabled = false;
+            saveButton.Enabled = false;
+            directoryCreateCourtOrderButton.Enabled = false;
+        }
+        /// <summary>
+        /// Массовая обработка файлов в папке завершена. Позволяет выбор нового шаблона и обнуляет прогресс-бар.
+        /// </summary>
+        private void OrdersInDirectoryWasCreated()
+        {
+            progressBarMultiThreading.Invoke((Action)(() => { progressBarMultiThreading.Value = 0; }));
+            chooseATemplateOrderButton.Invoke((Action)(() => { chooseATemplateOrderButton.Enabled = true; }));
+        }
+        #endregion
     }
 }
