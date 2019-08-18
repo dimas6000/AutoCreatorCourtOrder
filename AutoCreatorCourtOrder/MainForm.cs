@@ -201,19 +201,6 @@ namespace AutoCreatorCourtOrder
         }
 
         /// <summary>
-        /// Создаёт судебный приказа из файла. 
-        /// Предназначен для многопоточной обработки файлов в папке.
-        /// </summary>
-        /// <param name="file">Путь к обрабатываемому файлу.</param>
-        private void ForСreatesOrdersInMultipleThreads(string file)
-        {
-            RichTextBox box = new RichTextBox { Rtf = ExtractTextFromRtf(file) };
-            ExtractedData extData = ExtractData(box);
-            box.Rtf = CreateCourtOrder(WorkWithFiles.CourtOrderTemplate, extData);
-            SaveCourtOrder(new FileInfo(file), extData.FullName, box);
-            progressBarMultiThreading.Invoke((Action)(() => { progressBarMultiThreading.PerformStep(); }));
-        }
-        /// <summary>
         /// Автоматическое создание судебных приказов для всех файлов в папке.
         /// </summary>
         private void DirectoryCreateOrderButton_Click(object sender, EventArgs e)
@@ -231,7 +218,16 @@ namespace AutoCreatorCourtOrder
 
                     Thread th = new Thread(new ThreadStart(() =>
                     {
-                        Parallel.ForEach(rtfFiles, ForСreatesOrdersInMultipleThreads);
+                        Parallel.ForEach(rtfFiles, delegate (string file)
+                        {
+                            RichTextBox box = new RichTextBox { Rtf = ExtractTextFromRtf(file) };
+                            ExtractedData extData = ExtractData(box);
+                            box.Rtf = CreateCourtOrder(WorkWithFiles.CourtOrderTemplate, extData);
+                            SaveCourtOrder(new FileInfo(file), extData.FullName, box);
+                            progressBarMultiThreading.Invoke((Action)(() => { progressBarMultiThreading.PerformStep(); }));
+                        });
+
+                        // todo: Добавить проверку на оставшиеся необработанными файлы.
                         MessageBox.Show($"Обработано документов: {rtfFiles.Count()}");
                         OrdersInDirectoryWasCreated();
                     }));
