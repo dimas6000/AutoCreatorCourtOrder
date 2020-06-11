@@ -218,12 +218,12 @@ namespace AutoCreatorCourtOrder
                     progressBarMultiThreading.Maximum = rtfFiles.Count();
                     LockAllButtons();
 
-                    // todo: Исправить ошибку: при обработке 20 файлов из папки пишется, что обработано 20 файлов, даже если
-                    // произошла некая ошибка при обработке некоторых из них. Очень ярко проявляется при попытке многопоточной 
-                    // обработки нескольких копий файла, например делаю 20 копий "обезличенного заявления", из них штук пять
-                    // останутся необработанными, в то время как программа напишет, что обработала все файлы. 
+                    // todo: Исправить ошибку: при обработке нескольких копий файла, например делаю 20 копий
+                    // "обезличенного заявления", из них штук пять останутся необработанными, в то время
+                    // как программа напишет, что обработала все файлы. 
                     // Ошибка из-за того, что несколько потоков пытаются сохранить файл с одним именем.
                     // Сейчас вылетают MessageBox с текстом исключения. Нужно исправить. 
+                    // Баг временно исправлен добавление ID потока в имя сохраняемого файла. Но нужно сделать иначе.
                     Thread th = new Thread(new ThreadStart(() =>
                     {
                         Parallel.ForEach(rtfFiles, delegate (string file)
@@ -231,7 +231,7 @@ namespace AutoCreatorCourtOrder
                             RichTextBox box = new RichTextBox { Rtf = ExtractTextFromRtf(file) };
                             ExtractedData extData = ExtractData(box);
                             box.Rtf = CreateCourtOrder(WorkWithFiles.CourtOrderTemplate, extData);
-                            SaveCourtOrder(new FileInfo(file), extData.FullName, box);
+                            SaveCourtOrder(new FileInfo(file), extData.FullName + " " + Environment.CurrentManagedThreadId, box);
                             progressBarMultiThreading.Invoke((Action)(() => { progressBarMultiThreading.PerformStep(); }));
                         });
 
